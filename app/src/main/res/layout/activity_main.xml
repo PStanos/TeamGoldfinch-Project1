@@ -30,10 +30,11 @@
         <ImageView
             android:layout_width="105dp"
             android:layout_height="wrap_content"
-            android:id="@+id/imageView"
-            android:background="@drawable/parrot"
+            android:id="@+id/birdImage"
             android:layout_weight="0.33"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"
+            android:contentDescription="@string/parrot_accessibility"
+            android:src="@drawable/parrot" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -41,12 +42,12 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="@string/player_1_name"
             android:id="@+id/player1Text"
-            android:textSize="32sp" />
+            android:textSize="24sp" />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/player1EditText"
+            android:id="@+id/player1Name"
             android:layout_marginBottom="20dp"
             android:inputType="textCapWords" />
 
@@ -56,13 +57,12 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="@string/player_2_name"
             android:id="@+id/player2Text"
-            android:layout_gravity="center_horizontal|left"
-            android:textSize="32sp" />
+            android:textSize="24sp" />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/player2EditText"
+            android:id="@+id/player2Name"
             android:layout_marginBottom="25dp"
             android:inputType="textCapWords" />
     </LinearLayout>
