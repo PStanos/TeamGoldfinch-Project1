@@ -15,5 +15,6 @@
     <string name="selectable_hummingbird">selectable hummingbird</string>
     <string name="confirm_selection">Confirm Selection</string>
     <string name="bird_selection_info">Please select a bird to place</string>
+    <string name="parrot_accessibility">Parrot</string>
 
 </resources>
