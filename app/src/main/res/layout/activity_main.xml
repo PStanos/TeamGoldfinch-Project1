@@ -72,6 +72,6 @@
         android:layout_height="wrap_content"
         android:text="@string/start_game"
         android:id="@+id/startGame"
-        android:onClick="onStartGame"
+        android:onClick="onConfirmSelection"
         android:textSize="24sp" />
 </LinearLayout>
