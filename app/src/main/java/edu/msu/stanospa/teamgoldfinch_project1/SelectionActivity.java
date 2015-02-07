@@ -1,9 +1,11 @@
 package edu.msu.stanospa.teamgoldfinch_project1;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 
 public class SelectionActivity extends ActionBarActivity {
@@ -35,5 +37,10 @@ public class SelectionActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void onConfirmSelection(View view) {
+        Intent intent = new Intent(this, GameActivity.class);
+        startActivity(intent);
     }
 }
