@@ -24,6 +24,10 @@
             android:name=".SelectionActivity"
             android:label="@string/title_activity_selection" >
         </activity>
+        <activity
+            android:name=".FinalScoreActivity"
+            android:label="@string/title_activity_final_score" >
+        </activity>
     </application>
 
 </manifest>
