@@ -1,6 +1,7 @@
 package edu.msu.stanospa.teamgoldfinch_project1;
 
 import android.content.Context;
+import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -10,7 +11,10 @@ import android.view.View;
  */
 public class GameView extends View {
 
-    //private Game game;
+    /**
+     * The actual game
+     */
+    private Game game;
 
     public GameView(Context context) {
         super(context);
@@ -28,6 +32,14 @@ public class GameView extends View {
     }
 
     private void init(AttributeSet attrs, int defStyle) {
+        game = new Game(getContext());
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+        
+        game.draw(canvas);
     }
 
 }
