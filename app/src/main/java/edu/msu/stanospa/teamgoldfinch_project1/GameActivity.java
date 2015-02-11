@@ -40,7 +40,7 @@ public class GameActivity extends ActionBarActivity {
     }
 
     public void onPlaceBird(View view) {
-        Intent intent = new Intent(this, SelectionActivity.class);
+        Intent intent = new Intent(this, FinalScoreActivity.class);
         startActivity(intent);
     }
 }

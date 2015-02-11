@@ -1,3 +1,5 @@
+package edu.msu.stanospa.teamgoldfinch_project1;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
