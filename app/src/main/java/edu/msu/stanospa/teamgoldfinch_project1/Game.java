@@ -67,9 +67,9 @@ public class Game {
         outlinePaint.setStrokeWidth(3.0f);
         outlinePaint.setColor(Color.RED);
 
-        // Birds will be scaled so that the game is "2.5 ostriches" wide
+        // Birds will be scaled so that the game is "1.5 ostriches" wide
         Bitmap scaleBird = BitmapFactory.decodeResource(context.getResources(), R.drawable.ostrich);
-        scalingWidth = scaleBird.getWidth()*2.5f;
+        scalingWidth = scaleBird.getWidth()*1.5f;
 
         // load the temp bird image
         birds.add(new Bird(context, R.drawable.ostrich));
