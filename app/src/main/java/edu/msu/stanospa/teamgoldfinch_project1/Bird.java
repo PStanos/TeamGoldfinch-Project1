@@ -3,6 +3,7 @@ package edu.msu.stanospa.teamgoldfinch_project1;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Rect;
 
 /**
@@ -26,14 +27,14 @@ public class Bird {
     private Rect overlap = new Rect();
 
     /**
-     * x location in pixels
+     * x location
      */
-    private float x = 0;
+    private float x = 0.5f;
 
     /**
      * y location
      */
-    private float y = 0;
+    private float y = 0.5f;
 
     public Bird(Context context, int id) {
         bird = BitmapFactory.decodeResource(context.getResources(), id);
@@ -100,5 +101,17 @@ public class Bird {
         }
 
         return false;
+    }
+
+    public void draw(Canvas canvas, int marginX, int marginY, int gameSize, float scaleFactor) {
+
+        // draw the bird between saving and restoring the canvas state
+        canvas.save();
+        canvas.translate(marginX + x * gameSize, marginY + y * gameSize);
+        canvas.scale(scaleFactor, scaleFactor);
+        // could easily put rotation in here
+        canvas.translate(-bird.getWidth() / 2, -bird.getHeight() / 2);
+        canvas.drawBitmap(bird, 0, 0, null);
+        canvas.restore();
     }
 }
