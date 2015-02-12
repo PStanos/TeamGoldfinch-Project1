@@ -8,17 +8,21 @@ import android.graphics.Color;
 import android.graphics.Paint;
 
 import java.util.ArrayList;
+import java.util.Random;
 
-public class Game {
-
-    private Player player1;
-    private Player player2;
-
+/**
+ * Created by Ethan on 2/12/15.
+ */
+public class Selection {
     /**
      * Percentage of the view width/height that is occupied by the game
      */
     private final static float SCALE_IN_VIEW = 0.9f;
 
+    /**
+     * Random number generator
+     */
+    private static Random random = new Random();
 
     /**
      * The size of the game field
@@ -59,7 +63,7 @@ public class Game {
     /**
      * @param context the current context
      */
-    public Game(Context context) {
+    public Selection(Context context) {
 
         // Create the paint for outlining the play area
         outlinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -71,12 +75,14 @@ public class Game {
         Bitmap scaleBird = BitmapFactory.decodeResource(context.getResources(), R.drawable.ostrich);
         scalingWidth = scaleBird.getWidth()*1.5f;
 
-        // load the temp bird image
-        birds.add(new Bird(context, R.drawable.ostrich, 0.259f, 0.238f));
-    }
 
-    public void setPlayerSelection(Bird selection) {
-        // TODO: fill this in
+        // load the temp bird image
+        birds.add(new Bird(context, R.drawable.ostrich, 0.359f, 0.238f));
+        birds.add(new Bird(context, R.drawable.swallow, 0.766f, 0.158f));
+        birds.add(new Bird(context, R.drawable.robin, 0.841f, 0.501f));
+        birds.add(new Bird(context, R.drawable.hummingbird, 0.541f, 0.519f));
+        birds.add(new Bird(context, R.drawable.seagull, 0.610f, 0.761f));
+
     }
 
     public void draw(Canvas canvas) {
@@ -93,12 +99,14 @@ public class Game {
 
         // Draw the outline of the gameplay area
         canvas.drawRect(marginX, marginY, marginX + gameSize, marginY + gameSize, outlinePaint);
+        canvas.drawText("Select a bird", 0.1f, 0.1f, outlinePaint);
 
         scaleFactor = gameSize/scalingWidth;
 
         for (Bird bird : birds) {
-            bird.draw(canvas, marginX, marginY, gameSize, scaleFactor);
+            bird.place(canvas, marginX, marginY, gameSize, scaleFactor);
         }
 
     }
+
 }

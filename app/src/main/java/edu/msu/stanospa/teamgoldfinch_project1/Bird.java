@@ -6,6 +6,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 
+import java.util.Random;
+
 /**
  * This is a starting point for a class for a bird. It includes functions to
  * load the bird image and to do collision detection against another bird.
@@ -36,7 +38,15 @@ public class Bird {
      */
     private float y = 0.5f;
 
-    public Bird(Context context, int id) {
+    /**
+     * Location on the selection screen
+     */
+    private float selectionX;
+    private float selectionY;
+
+    public Bird(Context context, int id, float selectionX, float selectionY) {
+        this.selectionX = selectionX;
+        this.selectionY = selectionY;
         bird = BitmapFactory.decodeResource(context.getResources(), id);
         rect = new Rect();
         setRect();
@@ -114,4 +124,16 @@ public class Bird {
         canvas.drawBitmap(bird, 0, 0, null);
         canvas.restore();
     }
+
+    public void place(Canvas canvas, int marginX, int marginY, int gameSize, float scaleFactor){
+        // draw the bird between saving and restoring the canvas state
+        canvas.save();
+        canvas.translate(marginX + selectionX * gameSize, marginY + selectionY * gameSize);
+        canvas.scale(scaleFactor, scaleFactor);
+        canvas.translate(-bird.getWidth() / 2, -bird.getHeight() / 2);
+        canvas.drawBitmap(bird, 0, 0, null);
+        canvas.restore();
+    }
+
+
 }

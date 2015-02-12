@@ -43,4 +43,5 @@ public class SelectionActivity extends ActionBarActivity {
         Intent intent = new Intent(this, GameActivity.class);
         startActivity(intent);
     }
+
 }
