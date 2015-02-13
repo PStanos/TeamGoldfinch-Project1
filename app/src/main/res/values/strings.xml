@@ -21,5 +21,6 @@
     <string name="player_2_wins">Player 2 Wins!</string>
     <string name="new_game">New Game</string>
     <string name="place_bird">Place Bird</string>
+    <string name="player_1_select">Player 1 Select Your Bird!</string>
 
 </resources>
