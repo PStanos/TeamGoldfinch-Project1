@@ -12,7 +12,7 @@
         android:text="@string/player_1_select"
         android:id="@+id/playerNameLabel"
         android:layout_gravity="center_horizontal"
-        android:textSize="32sp" />
+        android:textSize="28sp" />
 
     <view
         android:layout_width="match_parent"
