@@ -6,14 +6,18 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 
 
 public class MainActivity extends ActionBarActivity {
+
+    private Game game;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        game = new Game(this);
     }
 
 
@@ -40,7 +44,16 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void onStartGame(View view) {
+        String name1 = ((EditText)findViewById(R.id.player1Name)).getText().toString();
+        String name2 = ((EditText)findViewById(R.id.player2Name)).getText().toString();
+
+        game.setPlayerNames(name1, name2);
+
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(getString(R.string.game_state), game);
+
         Intent intent = new Intent(this, SelectionActivity.class);
+        intent.putExtras(bundle);
         startActivity(intent);
     }
 }

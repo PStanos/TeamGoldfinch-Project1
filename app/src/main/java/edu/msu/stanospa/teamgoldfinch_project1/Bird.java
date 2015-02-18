@@ -6,27 +6,28 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 
+import java.io.Serializable;
 import java.util.Random;
 
 /**
  * This is a starting point for a class for a bird. It includes functions to
  * load the bird image and to do collision detection against another bird.
  */
-public class Bird {
+public class Bird implements Serializable {
     /**
      * The image for the actual bird.
      */
-    private Bitmap bird;
+    private transient Bitmap bird;
 
     /**
      * Rectangle that is where our bird is.
      */
-    private Rect rect;
+    private transient Rect rect;
 
     /**
      * Rectangle we will use for intersection testing
      */
-    private Rect overlap = new Rect();
+    private transient Rect overlap = new Rect();
 
     /**
      * x location
@@ -41,8 +42,8 @@ public class Bird {
     /**
      * Location on the selection screen
      */
-    private float selectionX;
-    private float selectionY;
+    private transient float selectionX;
+    private transient float selectionY;
 
     public Bird(Context context, int id, float selectionX, float selectionY) {
         this.selectionX = selectionX;

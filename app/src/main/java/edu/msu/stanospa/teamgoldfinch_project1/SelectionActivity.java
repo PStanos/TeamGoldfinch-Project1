@@ -10,10 +10,14 @@ import android.view.View;
 
 public class SelectionActivity extends ActionBarActivity {
 
+    private Game game;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_selection);
+
+        game = (Game)getIntent().getExtras().getSerializable(getString(R.string.game_state));
     }
 
 

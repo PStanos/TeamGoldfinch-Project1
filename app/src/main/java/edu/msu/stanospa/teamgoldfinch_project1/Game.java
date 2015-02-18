@@ -7,13 +7,17 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Game {
+public class Game implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     /**
      * Used to track what state the game is currently in
      */
     private enum GameState {
+        nameEntry,
         birdSelection,
         birdPlacement
     }
@@ -27,33 +31,33 @@ public class Game {
     /**
      * The size of the game field
      */
-    private int gameSize;
+    private transient int gameSize;
 
 
     /**
      * The width screen margin for the game
      */
-    private int marginX;
+    private transient int marginX;
 
     /**
      * The height screen buffer for the game
      */
-    private int marginY;
+    private transient int marginY;
 
     /**
      * The 1:1 scaling width of the game
      */
-    private float scalingWidth;
+    private transient float scalingWidth;
 
     /**
      * the scaling factor for drawing birds
      */
-    private float scaleFactor;
+    private transient float scaleFactor;
 
     /**
      * Paint for outlining the area the puzzle is in
      */
-    private Paint outlinePaint;
+    private transient Paint outlinePaint;
 
     /**
      * Collection of the birds that have been placed
@@ -69,11 +73,6 @@ public class Game {
      * The second player in the game
      */
     private Player player2;
-
-    /**
-     * The player that won the game
-     */
-    private Player winner = null;
 
     /**
      * The player turn: the first player to go for 0, or the second player to go for 1
@@ -161,6 +160,13 @@ public class Game {
         return playerTurn == 1;
     }
 
+    public void setPlayerNames(String name1, String name2) {
+        player1 = new Player(name1);
+        player2 = new Player(name2);
+
+        state = GameState.birdSelection;
+    }
+
     /**
      * Set the current player's bird selection
      * @param selection the bird selected to place this round
@@ -175,11 +181,10 @@ public class Game {
      * Confirms the player has chosen where their bird goes
      */
     public void confirmBirdPlacement() {
-
         // Check to see if the player's bird collides with any other bird
         for(int itr = 0; itr < birds.size(); itr++) {
             if(getCurrentPlayer().getSelectedBird().collisionTest(birds.get(itr))) {
-                winner = getNextPlayer();
+                declareWinner(getNextPlayer());
                 return;
             }
         }
@@ -187,6 +192,26 @@ public class Game {
         birds.add(getCurrentPlayer().getSelectedBird());
 
         advanceTurn();
+    }
+
+    private void declareWinner(Player winner) {
+
+    }
+
+    /**
+     * Gets text to display to the player when they need to select a bird
+     * @return the text to tell the player to select their bird
+     */
+    public String getBirdSelectionText() {
+        return "Select your bird " + getCurrentPlayer().getName();
+    }
+
+    /**
+     * Gets text to display to the player when they need to place a bird
+     * @return the text to tell the player to place their bird
+     */
+    public String getBirdPlacementText() {
+        return "Place your bird " + getCurrentPlayer().getName();
     }
 
     /**
