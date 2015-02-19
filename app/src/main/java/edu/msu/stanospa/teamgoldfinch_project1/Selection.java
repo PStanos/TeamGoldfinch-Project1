@@ -6,6 +6,9 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -18,11 +21,6 @@ public class Selection {
      * Percentage of the view width/height that is occupied by the game
      */
     private final static float SCALE_IN_VIEW = 0.9f;
-
-    /**
-     * Random number generator
-     */
-    private static Random random = new Random();
 
     /**
      * The size of the game field
@@ -60,6 +58,8 @@ public class Selection {
      */
     private ArrayList<Bird> birds = new ArrayList<>();
 
+
+
     /**
      * @param context the current context
      */
@@ -76,12 +76,12 @@ public class Selection {
         scalingWidth = scaleBird.getWidth()*1.5f;
 
 
-        // load the temp bird image
-        birds.add(new Bird(context, R.drawable.ostrich, 0.359f, 0.238f));
+        // load the bird images
+        birds.add(new Bird(context, R.drawable.ostrich, 0.359f, 0.480f));
         birds.add(new Bird(context, R.drawable.swallow, 0.766f, 0.158f));
         birds.add(new Bird(context, R.drawable.robin, 0.841f, 0.501f));
-        birds.add(new Bird(context, R.drawable.hummingbird, 0.541f, 0.519f));
-        birds.add(new Bird(context, R.drawable.seagull, 0.610f, 0.761f));
+        birds.add(new Bird(context, R.drawable.hummingbird, 0.158f, 0.119f));
+        birds.add(new Bird(context, R.drawable.seagull, 0.710f, 0.701f));
 
     }
 
@@ -99,9 +99,13 @@ public class Selection {
 
         // Draw the outline of the gameplay area
         canvas.drawRect(marginX, marginY, marginX + gameSize, marginY + gameSize, outlinePaint);
-        canvas.drawText("Select a bird", 0.1f, 0.1f, outlinePaint);
 
-        scaleFactor = gameSize/scalingWidth;
+        scaleFactor = (float)gameSize/scalingWidth;
+
+        canvas.save();
+        canvas.translate(marginX, marginY);
+        canvas.scale(scaleFactor, scaleFactor);
+        canvas.restore();
 
         for (Bird bird : birds) {
             bird.place(canvas, marginX, marginY, gameSize, scaleFactor);
@@ -109,4 +113,49 @@ public class Selection {
 
     }
 
+    /**
+     * Handle a touch event from the view.
+     * @param view The view that is the source of the touch
+     * @param event The motion event describing the touch
+     * @return true if the touch is handled.
+     */
+    public boolean onTouchEvent(View view, MotionEvent event) {
+        float relX = (event.getX() - marginX) / gameSize;
+        float relY = (event.getY() - marginY) / gameSize;
+
+        switch (event.getActionMasked()) {
+
+            case MotionEvent.ACTION_DOWN:
+                Log.i("onTouchEvent", "ACTION_DOWN");
+
+                return onTouched(relX, relY);
+
+            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_CANCEL:
+                break;
+
+            case MotionEvent.ACTION_MOVE:
+                break;
+        }
+
+        return false;
+    }
+
+    private boolean onTouched(float x, float y) {
+        Log.i("onTouched", "checking...");
+
+        // Check each piece to see if it has been hit
+        // We do this in reverse order so we find the pieces in front
+        for(int b=birds.size()-1; b>=0;  b--) {
+            if (birds.get(b).hit(x, y, gameSize, scaleFactor)) {
+                // We hit a piece!
+                Log.i("onTouched", "PIECE HIT!!");
+                int a = b;
+
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

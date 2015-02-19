@@ -2,31 +2,42 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="edu.msu.stanospa.teamgoldfinch_project1.GameActivity"
-    android:orientation="vertical"
-    android:weightSum="1">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/player_1_select"
-        android:id="@+id/playerNameLabel"
-        android:layout_gravity="center_horizontal"
-        android:textSize="28sp" />
+    android:orientation="horizontal"
+    android:weightSum="1"
+    android:id="@+id/selectionScreen">
 
     <view
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
         class="edu.msu.stanospa.teamgoldfinch_project1.SelectionView"
         android:id="@+id/selectionView"
         android:focusableInTouchMode="false"
-        android:layout_weight=".9" />
+        android:layout_weight="1" />
 
-    <Button
+    <FrameLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/confirm_selection"
-        android:id="@+id/placeBird"
-        android:layout_gravity="center_horizontal"
-        android:onClick="onConfirmSelection" />
+        android:layout_height="150dp"
+        android:layout_weight="1"
+        android:layout_gravity="center_vertical"
+        android:layout_marginRight="5dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/player_1_select"
+            android:id="@+id/playerNameLabel"
+            android:layout_gravity="center_horizontal|top"
+            android:textSize="28sp" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/confirm_selection"
+            android:id="@+id/placeBird"
+            android:layout_gravity="center_horizontal|bottom"
+            android:onClick="onConfirmSelection" />
+
+    </FrameLayout>
+
 </LinearLayout>

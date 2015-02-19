@@ -63,18 +63,20 @@ public class Bird implements Serializable {
         rect.set((int)x, (int)y, (int)x+bird.getWidth(), (int)y+bird.getHeight());
     }
 
-    public boolean hit(float testX, float testY) {
-        int pX = (int)((testX - x));
-        int pY = (int)((testY - y));
+    public boolean hit(float testX, float testY, int gameSize, float scaleFactor) {
+        //int pX = (int)((testX - x));
+        //int pY = (int)((testY - y));
+        int pX = (int)((testX - x) * gameSize / scaleFactor) + bird.getWidth() / 2;
+        int pY = (int)((testY - y) * gameSize / scaleFactor) + bird.getHeight() / 2;
 
         if(pX < 0 || pX >= bird.getWidth() ||
                 pY < 0 || pY >= bird.getHeight()) {
             return false;
         }
-
+        return true;
         // We are within the rectangle of the piece.
         // Are we touching actual picture?
-        return (bird.getPixel(pX, pY) & 0xff000000) != 0;
+        //return (bird.getPixel(pX, pY) & 0xff000000) != 0;
     }
 
     /**
