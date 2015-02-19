@@ -78,8 +78,8 @@ public class Selection {
 
         // load the bird images
         birds.add(new Bird(context, R.drawable.ostrich, 0.359f, 0.480f));
-        birds.add(new Bird(context, R.drawable.swallow, 0.766f, 0.158f));
-        birds.add(new Bird(context, R.drawable.robin, 0.841f, 0.501f));
+        birds.add(new Bird(context, R.drawable.swallow, 0.806f, 0.158f));
+        birds.add(new Bird(context, R.drawable.robin, 0.841f, 0.451f));
         birds.add(new Bird(context, R.drawable.hummingbird, 0.158f, 0.119f));
         birds.add(new Bird(context, R.drawable.seagull, 0.710f, 0.701f));
 
@@ -108,8 +108,9 @@ public class Selection {
         canvas.restore();
 
         for (Bird bird : birds) {
-            bird.place(canvas, marginX, marginY, gameSize, scaleFactor);
+            bird.draw(canvas, marginX, marginY, gameSize, scaleFactor);
         }
+
 
     }
 

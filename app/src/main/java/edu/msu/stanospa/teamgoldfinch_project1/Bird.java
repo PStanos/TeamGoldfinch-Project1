@@ -49,6 +49,7 @@ public class Bird implements Serializable {
         this.selectionX = selectionX;
         this.selectionY = selectionY;
         bird = BitmapFactory.decodeResource(context.getResources(), id);
+        //bird.move()
         rect = new Rect();
         setRect();
     }
@@ -120,19 +121,9 @@ public class Bird implements Serializable {
 
         // draw the bird between saving and restoring the canvas state
         canvas.save();
-        canvas.translate(marginX + x * gameSize, marginY + y * gameSize);
-        canvas.scale(scaleFactor, scaleFactor);
-        // could easily put rotation in here
-        canvas.translate(-bird.getWidth() / 2, -bird.getHeight() / 2);
-        canvas.drawBitmap(bird, 0, 0, null);
-        canvas.restore();
-    }
-
-    public void place(Canvas canvas, int marginX, int marginY, int gameSize, float scaleFactor){
-        // draw the bird between saving and restoring the canvas state
-        canvas.save();
         canvas.translate(marginX + selectionX * gameSize, marginY + selectionY * gameSize);
         canvas.scale(scaleFactor, scaleFactor);
+        // could easily put rotation in here
         canvas.translate(-bird.getWidth() / 2, -bird.getHeight() / 2);
         canvas.drawBitmap(bird, 0, 0, null);
         canvas.restore();
