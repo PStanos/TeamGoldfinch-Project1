@@ -11,7 +11,6 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * Created by Ethan on 2/12/15.
@@ -77,11 +76,21 @@ public class Selection {
 
 
         // load the bird images
-        birds.add(new Bird(context, R.drawable.ostrich, 0.359f, 0.480f));
-        birds.add(new Bird(context, R.drawable.swallow, 0.806f, 0.158f));
-        birds.add(new Bird(context, R.drawable.robin, 0.841f, 0.451f));
-        birds.add(new Bird(context, R.drawable.hummingbird, 0.158f, 0.119f));
-        birds.add(new Bird(context, R.drawable.seagull, 0.710f, 0.701f));
+        birds.add(new Bird(context, R.drawable.ostrich));
+        birds.get(0).setX(0.359f);
+        birds.get(0).setY(0.480f);
+        birds.add(new Bird(context, R.drawable.swallow));
+        birds.get(1).setX(0.806f);
+        birds.get(1).setY(0.158f);
+        birds.add(new Bird(context, R.drawable.robin));
+        birds.get(2).setX(0.841f);
+        birds.get(2).setY(0.451f);
+        birds.add(new Bird(context, R.drawable.hummingbird));
+        birds.get(3).setX(0.158f);
+        birds.get(3).setY(0.119f);
+        birds.add(new Bird(context, R.drawable.seagull));
+        birds.get(4).setX(0.710f);
+        birds.get(4).setY(0.701f);
 
     }
 
