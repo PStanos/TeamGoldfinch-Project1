@@ -6,12 +6,16 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.Bundle;
+import android.view.MotionEvent;
+import android.view.View;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Game implements Serializable {
     private static final long serialVersionUID = 1L;
+    private static final String LOCATIONS = "Game.locations";
 
     /**
      * Used to track what state the game is currently in
@@ -27,6 +31,15 @@ public class Game implements Serializable {
      */
     private final static float SCALE_IN_VIEW = 0.9f;
 
+    /**
+     * Width of the border around the game
+     */
+    private final static float BORDER_WIDTH = 3;
+
+    /**
+     * Paint for outlining the area the game is in
+     */
+    private static Paint outlinePaint;
 
     /**
      * The size of the game field
@@ -55,11 +68,6 @@ public class Game implements Serializable {
     private transient float scaleFactor;
 
     /**
-     * Paint for outlining the area the puzzle is in
-     */
-    private transient Paint outlinePaint;
-
-    /**
      * Collection of the birds that have been placed
      */
     private ArrayList<Bird> birds = new ArrayList<>();
@@ -85,6 +93,21 @@ public class Game implements Serializable {
     private int roundNum = 0;
 
     /**
+     * Is there a bird currently being dragged
+     */
+    private Bird dragging = null;
+
+    /**
+     * Most recent relative X touch when dragging
+     */
+    private float lastRelX;
+
+    /**
+     * Most recent relative Y touch when dragging
+     */
+    private float lastRelY;
+
+    /**
      * The current stage of the game
      */
     private GameState state = GameState.birdSelection;
@@ -97,7 +120,7 @@ public class Game implements Serializable {
         // Create the paint for outlining the play area
         outlinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         outlinePaint.setStyle(Paint.Style.STROKE);
-        outlinePaint.setStrokeWidth(3.0f);
+        outlinePaint.setStrokeWidth(BORDER_WIDTH);
         outlinePaint.setColor(Color.RED);
 
         // Birds will be scaled so that the game is "1.5 ostriches" wide
@@ -106,6 +129,13 @@ public class Game implements Serializable {
 
         // load the temp bird image
         birds.add(new Bird(context, R.drawable.ostrich, 0.259f, 0.238f));
+        birds.add(new Bird(context, R.drawable.parrot, 0.2f, 0.238f));
+        birds.add(new Bird(context, R.drawable.seagull, 0.1f, 0.1f));
+        dragging = birds.get(0);
+    }
+
+    public boolean inSelectionState() {
+        return state == GameState.birdSelection;
     }
 
     /**
@@ -231,12 +261,83 @@ public class Game implements Serializable {
         marginY = (height - gameSize) / 2;
 
         // Draw the outline of the gameplay area
-        canvas.drawRect(marginX, marginY, marginX + gameSize, marginY + gameSize, outlinePaint);
+        canvas.drawRect(marginX - BORDER_WIDTH, marginY - BORDER_WIDTH,
+                marginX + gameSize + BORDER_WIDTH, marginY + gameSize + BORDER_WIDTH, outlinePaint);
 
         scaleFactor = gameSize/scalingWidth;
 
         for (Bird bird : birds) {
             bird.draw(canvas, marginX, marginY, gameSize, scaleFactor);
+        }
+    }
+
+    public void reloadBirds(Context context) {
+        for (Bird bird : birds) {
+            bird.reloadBitmap(context);
+        }
+
+        // Birds will be scaled so that the game is "1.5 ostriches" wide
+        Bitmap scaleBird = BitmapFactory.decodeResource(context.getResources(), R.drawable.ostrich);
+        scalingWidth = scaleBird.getWidth()*1.5f;
+    }
+
+    /**
+     * Handle a touch event from the view.
+     * @param view The view that is the source of the touch
+     * @param event The motion event describing the touch
+     * @return true if the touch is handled.
+     */
+    public boolean onTouchEvent(View view, MotionEvent event) {
+
+        // Convert an x,y location to a relative location in the puzzle
+        float relX = (event.getX() - marginX) / gameSize;
+        float relY = (event.getY() - marginY) / gameSize;
+
+
+
+        switch (event.getActionMasked()) {
+
+            case MotionEvent.ACTION_DOWN:
+                lastRelX = relX;
+                lastRelY = relY;
+                return true;
+
+            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_CANCEL:
+                break;
+
+            case MotionEvent.ACTION_MOVE:
+                if (dragging != null) {
+                    dragging.move(relX - lastRelX, relY - lastRelY, gameSize, scaleFactor);
+                    lastRelX = relX;
+                    lastRelY = relY;
+                    view.invalidate();
+                    return true;
+                }
+                break;
+        }
+
+        return false;
+    }
+    public void saveInstanceState(Bundle bundle) {
+        float [] locations = new float[birds.size() * 2];
+
+        for (int i = 0; i < birds.size(); i++) {
+            Bird bird = birds.get(i);
+            locations[i*2] = bird.getX();
+            locations[i*2+1] = bird.getY();
+        }
+
+        bundle.putFloatArray(LOCATIONS, locations);
+    }
+
+    public void loadInstanceState(Bundle bundle) {
+        float [] locations = bundle.getFloatArray(LOCATIONS);
+
+        for (int i = 0; i < birds.size(); i++) {
+            Bird bird = birds.get(i);
+            bird.setX(locations[i*2]);
+            bird.setY(locations[i*2+1]);
         }
     }
 }
