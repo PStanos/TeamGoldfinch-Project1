@@ -3,6 +3,7 @@ package edu.msu.stanospa.teamgoldfinch_project1;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 
 /**
@@ -42,5 +43,9 @@ public class SelectionView extends View {
         selection.draw(canvas);
     }
 
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return selection.onTouchEvent(this, event);
+    }
 }
 

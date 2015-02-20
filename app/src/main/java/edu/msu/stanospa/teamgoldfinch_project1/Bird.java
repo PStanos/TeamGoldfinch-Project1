@@ -49,6 +49,7 @@ public class Bird implements Serializable {
         this.selectionX = selectionX;
         this.selectionY = selectionY;
         bird = BitmapFactory.decodeResource(context.getResources(), id);
+        //bird.move()
         rect = new Rect();
         setRect();
     }
@@ -63,18 +64,20 @@ public class Bird implements Serializable {
         rect.set((int)x, (int)y, (int)x+bird.getWidth(), (int)y+bird.getHeight());
     }
 
-    public boolean hit(float testX, float testY) {
-        int pX = (int)((testX - x));
-        int pY = (int)((testY - y));
+    public boolean hit(float testX, float testY, int gameSize, float scaleFactor) {
+        //int pX = (int)((testX - x));
+        //int pY = (int)((testY - y));
+        int pX = (int)((testX - x) * gameSize / scaleFactor) + bird.getWidth() / 2;
+        int pY = (int)((testY - y) * gameSize / scaleFactor) + bird.getHeight() / 2;
 
         if(pX < 0 || pX >= bird.getWidth() ||
                 pY < 0 || pY >= bird.getHeight()) {
             return false;
         }
-
+        return true;
         // We are within the rectangle of the piece.
         // Are we touching actual picture?
-        return (bird.getPixel(pX, pY) & 0xff000000) != 0;
+        //return (bird.getPixel(pX, pY) & 0xff000000) != 0;
     }
 
     /**
@@ -118,19 +121,9 @@ public class Bird implements Serializable {
 
         // draw the bird between saving and restoring the canvas state
         canvas.save();
-        canvas.translate(marginX + x * gameSize, marginY + y * gameSize);
-        canvas.scale(scaleFactor, scaleFactor);
-        // could easily put rotation in here
-        canvas.translate(-bird.getWidth() / 2, -bird.getHeight() / 2);
-        canvas.drawBitmap(bird, 0, 0, null);
-        canvas.restore();
-    }
-
-    public void place(Canvas canvas, int marginX, int marginY, int gameSize, float scaleFactor){
-        // draw the bird between saving and restoring the canvas state
-        canvas.save();
         canvas.translate(marginX + selectionX * gameSize, marginY + selectionY * gameSize);
         canvas.scale(scaleFactor, scaleFactor);
+        // could easily put rotation in here
         canvas.translate(-bird.getWidth() / 2, -bird.getHeight() / 2);
         canvas.drawBitmap(bird, 0, 0, null);
         canvas.restore();
