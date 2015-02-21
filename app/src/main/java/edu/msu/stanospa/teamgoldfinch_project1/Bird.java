@@ -7,7 +7,6 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 
 import java.io.Serializable;
-import java.util.Random;
 
 /**
  * This is a starting point for a class for a bird. It includes functions to
@@ -30,6 +29,11 @@ public class Bird implements Serializable {
     private transient Rect overlap = new Rect();
 
     /**
+     * The resource id for this bird's image
+     */
+    private int id;
+
+    /**
      * x location
      */
     private float x = 0.5f;
@@ -39,25 +43,55 @@ public class Bird implements Serializable {
      */
     private float y = 0.5f;
 
-    /**
-     * Location on the selection screen
-     */
-    private transient float selectionX;
-    private transient float selectionY;
 
-    public Bird(Context context, int id, float selectionX, float selectionY) {
-        this.selectionX = selectionX;
-        this.selectionY = selectionY;
+    public Bird(Context context, int id) {
+        this.id = id;
         bird = BitmapFactory.decodeResource(context.getResources(), id);
         //bird.move()
         rect = new Rect();
         setRect();
     }
 
-    public void move(float dx, float dy) {
+    public void reloadBitmap(Context context) {
+        bird = BitmapFactory.decodeResource(context.getResources(), id);
+        rect = new Rect();
+        setRect();
+    }
+
+    public void move(float dx, float dy, float  gameSize, float scaleFactor) {
+        float birdMarginX = bird.getWidth()/(2*gameSize) * scaleFactor;
+        float birdMarginY = bird.getHeight()/(2*gameSize) * scaleFactor;
+
         x += dx;
         y += dy;
+
+        if (x < birdMarginX)
+            x = birdMarginX;
+        else if (x > 1 - birdMarginX)
+            x = 1 - birdMarginX;
+
+        if (y < birdMarginY)
+            y = birdMarginY;
+        else if (y > 1 - birdMarginY)
+            y = 1 - birdMarginY;
+
         setRect();
+    }
+
+    public float getX() {
+        return x;
+    }
+
+    public void setX(float x) {
+        this.x = x;
+    }
+
+    public float getY() {
+        return y;
+    }
+
+    public void setY(float y) {
+        this.y = y;
     }
 
     private void setRect() {
@@ -121,7 +155,7 @@ public class Bird implements Serializable {
 
         // draw the bird between saving and restoring the canvas state
         canvas.save();
-        canvas.translate(marginX + selectionX * gameSize, marginY + selectionY * gameSize);
+        canvas.translate(marginX + x * gameSize, marginY + y * gameSize);
         canvas.scale(scaleFactor, scaleFactor);
         // could easily put rotation in here
         canvas.translate(-bird.getWidth() / 2, -bird.getHeight() / 2);

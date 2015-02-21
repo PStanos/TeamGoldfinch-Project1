@@ -10,10 +10,22 @@ import android.view.View;
 
 public class GameActivity extends ActionBarActivity {
 
+    private GameView gameView;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void onCreate(Bundle bundle) {
+        super.onCreate(bundle);
         setContentView(R.layout.activity_game);
+        Game game = (Game)getIntent().getExtras().getSerializable(getString(R.string.game_state));
+        gameView = (GameView)findViewById(R.id.gameView);
+        gameView.setGame(game);
+
+        gameView.reloadBirds();
+
+        if (bundle != null) {
+            gameView.loadInstanceState(bundle);
+        }
+
     }
 
 
@@ -38,9 +50,19 @@ public class GameActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
     public void onPlaceBird(View view) {
-        Intent intent = new Intent(this, FinalScoreActivity.class);
-        startActivity(intent);
+        GameView gView = (GameView) findViewById(R.id.gameView);
+        gView.onPlaceBird();
+
+        if (gameView.inSelectionState()) {
+            Intent intent = new Intent(this, FinalScoreActivity.class);
+            startActivity(intent);
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle bundle) {
+        super.onSaveInstanceState(bundle);
+        gameView.saveInstanceState(bundle);
     }
 }
