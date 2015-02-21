@@ -15,7 +15,6 @@ import java.util.ArrayList;
 
 public class Game implements Serializable {
     private static final long serialVersionUID = 1L;
-    private static final String LOCATIONS = "Game.locations";
 
     /**
      * Used to track what state the game is currently in
@@ -118,14 +117,10 @@ public class Game implements Serializable {
      */
     private GameState state = GameState.birdSelection;
 
-    private transient Context context;
-
     /**
      * @param context the current context
      */
     public Game(Context context) {
-        this.context = context;
-
         // Create the paint for outlining the play area
         outlinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         outlinePaint.setStyle(Paint.Style.STROKE);
