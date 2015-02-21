@@ -6,14 +6,26 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 
 public class FinalScoreActivity extends ActionBarActivity {
+    Game game;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void onCreate(Bundle bundle) {
+        super.onCreate(bundle);
         setContentView(R.layout.activity_final_score);
+
+        if(bundle != null) {
+            game = (Game)bundle.getSerializable(getString(R.string.game_state));
+        }
+        else {
+            game = (Game)getIntent().getExtras().getSerializable(getString(R.string.game_state));
+        }
+
+        ((TextView)findViewById(R.id.winningPlayerText)).setText(String.format(getString(R.string.player_wins), game.getWinningPlayerName()));
+        ((TextView)findViewById(R.id.roundText)).setText(String.format(getString(R.string.rounds_played), game.getRoundNum()));
     }
 
 
@@ -42,5 +54,12 @@ public class FinalScoreActivity extends ActionBarActivity {
     public void onNewGame(View view) {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle bundle) {
+        super.onSaveInstanceState(bundle);
+
+        game.saveInstanceState(bundle, this);
     }
 }
