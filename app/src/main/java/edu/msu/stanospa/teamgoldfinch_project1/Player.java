@@ -1,5 +1,7 @@
 package edu.msu.stanospa.teamgoldfinch_project1;
 
+import android.util.Log;
+
 import java.io.Serializable;
 
 public class Player implements Serializable {
@@ -39,6 +41,7 @@ public class Player implements Serializable {
      * @param selectedBird the selected bird
      */
     public void setSelectedBird(Bird selectedBird) {
+        Log.i("setSelectedBird()", "bird set!");
         this.selectedBird = selectedBird;
     }
 

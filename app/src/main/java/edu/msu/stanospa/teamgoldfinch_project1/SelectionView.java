@@ -36,6 +36,20 @@ public class SelectionView extends View {
         selection = new Selection(getContext());
     }
 
+    public void setPlayerSelection(Game game){
+        game.setPlayerSelection(selection.getTouchedBird());
+    }
+
+
+    /*
+    ** check to see if player selected a bird yet
+     */
+    public boolean isSelected(){
+        if (selection.getTouchedBird() != null) return true;
+
+        return false;
+    }
+
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);

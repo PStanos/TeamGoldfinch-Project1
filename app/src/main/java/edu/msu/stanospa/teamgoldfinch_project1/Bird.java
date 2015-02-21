@@ -117,10 +117,9 @@ public class Bird implements Serializable {
                 pY < 0 || pY >= bird.getHeight()) {
             return false;
         }
-        return true;
         // We are within the rectangle of the piece.
         // Are we touching actual picture?
-        //return (bird.getPixel(pX, pY) & 0xff000000) != 0;
+        return (bird.getPixel(pX, pY) & 0xff000000) != 0;
     }
 
     /**
