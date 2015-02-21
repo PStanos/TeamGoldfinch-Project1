@@ -2,6 +2,7 @@ package edu.msu.stanospa.teamgoldfinch_project1;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -60,6 +61,22 @@ public class SelectionView extends View {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         return selection.onTouchEvent(this, event);
+    }
+
+    /**
+     * Save the selection to a bundle
+     * @param bundle The bundle we save to
+     */
+    public void saveInstanceState(Bundle bundle) {
+        selection.saveInstanceState(bundle);
+    }
+
+    /**
+     * Load the selection from a bundle
+     * @param bundle The bundle we save to
+     */
+    public void loadInstanceState(Bundle bundle) {
+        selection.loadInstanceState(bundle);
     }
 }
 

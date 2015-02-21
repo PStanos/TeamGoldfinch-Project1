@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -173,5 +174,24 @@ public class Selection {
         }
 
         return false;
+    }
+
+    /**
+     * save the selection in to a bundle
+     * @param bundle the bundle we save to
+     */
+    public void saveInstanceState(Bundle bundle) {
+        if (touchedBird != null) {
+            bundle.putInt("touchedBirdIndex", birds.indexOf(touchedBird));
+        }
+    }
+
+    /**
+     * Read the selection from a bundle
+     * @param bundle The bundle we save to
+     */
+    public void loadInstanceState(Bundle bundle) {
+        int touchedBirdIndex = bundle.getInt("touchedBirdIndex");
+        touchedBird = birds.get(touchedBirdIndex);
     }
 }
