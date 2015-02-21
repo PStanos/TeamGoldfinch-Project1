@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 
 public class SelectionActivity extends ActionBarActivity {
@@ -29,6 +30,8 @@ public class SelectionActivity extends ActionBarActivity {
 
         game = (Game)getIntent().getExtras().getSerializable(getString(R.string.game_state));
         selectionView = (SelectionView)findViewById(R.id.selectionView);
+
+        //TextView selectionText = (TextView) findViewById(R.)
 
         if (bundle != null){
             Log.i("onCreate()", "restoring state...");
@@ -66,9 +69,12 @@ public class SelectionActivity extends ActionBarActivity {
         if (selectionView.isSelected()) {
             selectionView.setPlayerSelection(game);
 
-            Intent intent = new Intent(this, GameActivity.class);
-            intent.putExtras(bundle);
-            startActivity(intent);
+            if (!game.inSelectionState()){
+                Intent intent = new Intent(this, GameActivity.class);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+
         } else {
             Log.i("onConfirmSelection", "bird not selected");
         }
