@@ -16,14 +16,6 @@ public class Player implements Serializable {
     }
 
     /**
-     * Set the player's name
-     * @param name the player's new name
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
      * The player's name
      */
     private String name;
@@ -52,9 +44,5 @@ public class Player implements Serializable {
 
     public Player(String name) {
         this.name = name;
-    }
-
-    public Player() {
-
     }
 }
