@@ -52,11 +52,19 @@ public class Selection {
      */
     private Paint outlinePaint;
 
+    public Bird getTouchedBird() {
+        return touchedBird;
+    }
+
+    /**
+     * Currently touched bird
+     */
+    private Bird touchedBird = null;
+
     /**
      * Collection of the birds that have been placed
      */
     private ArrayList<Bird> birds = new ArrayList<>();
-
 
 
     /**
@@ -136,7 +144,6 @@ public class Selection {
         switch (event.getActionMasked()) {
 
             case MotionEvent.ACTION_DOWN:
-                Log.i("onTouchEvent", "ACTION_DOWN");
 
                 return onTouched(relX, relY);
 
@@ -159,9 +166,8 @@ public class Selection {
         for(int b=birds.size()-1; b>=0;  b--) {
             if (birds.get(b).hit(x, y, gameSize, scaleFactor)) {
                 // We hit a piece!
-                Log.i("onTouched", "PIECE HIT!!");
-                int a = b;
-
+                Log.i("onTouched", "PIECE HIT!!" + birds.get(b));
+                touchedBird = birds.get(b);
                 return true;
             }
         }

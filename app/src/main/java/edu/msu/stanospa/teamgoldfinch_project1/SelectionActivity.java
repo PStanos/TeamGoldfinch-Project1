@@ -3,6 +3,7 @@ package edu.msu.stanospa.teamgoldfinch_project1;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,12 +13,17 @@ public class SelectionActivity extends ActionBarActivity {
 
     private Game game;
 
+    private SelectionView selectionView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_selection);
 
         game = (Game)getIntent().getExtras().getSerializable(getString(R.string.game_state));
+        selectionView = (SelectionView)findViewById(R.id.selectionView);
+
+        //selectionView.setGame(game);
     }
 
 
@@ -47,10 +53,15 @@ public class SelectionActivity extends ActionBarActivity {
         Bundle bundle = new Bundle();
         bundle.putSerializable(getString(R.string.game_state), game);
 
+        if (selectionView.isSelected()) {
+            selectionView.setPlayerSelection(game);
 
-        Intent intent = new Intent(this, GameActivity.class);
-        intent.putExtras(bundle);
-        startActivity(intent);
+            Intent intent = new Intent(this, GameActivity.class);
+            intent.putExtras(bundle);
+            startActivity(intent);
+        } else {
+            Log.i("onConfirmSelection", "bird not selected");
+        }
     }
 
 }
