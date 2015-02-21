@@ -170,19 +170,21 @@ public class Game implements Serializable {
      */
     private void advanceTurn() {
         if(isSecondTurn()) {
+            playerTurn = 0;
+
             if(state == GameState.birdSelection) {
                 state = GameState.birdPlacement;
                 dragging = getCurrentPlayer().getSelectedBird();
             }
             else {
                 state = GameState.birdSelection;
+                dragging = null;
                 roundNum++;
             }
-
-            playerTurn = 0;
         }
         else {
             playerTurn = 1;
+            dragging = getCurrentPlayer().getSelectedBird();
         }
     }
 
