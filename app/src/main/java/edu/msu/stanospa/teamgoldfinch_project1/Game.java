@@ -23,7 +23,8 @@ public class Game implements Serializable {
     private enum GameState {
         nameEntry,
         birdSelection,
-        birdPlacement
+        birdPlacement,
+        gameOver
     }
 
     /**
@@ -83,6 +84,11 @@ public class Game implements Serializable {
     private Player player2;
 
     /**
+     * The player that won the game
+     */
+    private Player winner;
+
+    /**
      * The player turn: the first player to go for 0, or the second player to go for 1
      */
     private int playerTurn = 0;
@@ -129,17 +135,21 @@ public class Game implements Serializable {
         // Birds will be scaled so that the game is "1.5 ostriches" wide
         Bitmap scaleBird = BitmapFactory.decodeResource(context.getResources(), R.drawable.ostrich);
         scalingWidth = scaleBird.getWidth()*1.5f;
-
-        // load the temp bird image
-        //birds.add(new Bird(context, R.drawable.ostrich));
-        //birds.add(new Bird(context, R.drawable.parrot));
-        //birds.add(new Bird(context, R.drawable.seagull));
-        //dragging = birds.get(0);
     }
 
+    /**
+     * Determines if the game is in the selection state
+     * @return true if the game is in the selection state; false otherwise
+     */
     public boolean inSelectionState() {
         return state.equals(GameState.birdSelection);
     }
+
+    /**
+     * Determines if the game is in the game over state
+     * @return true if the game is over; false otherwise
+     */
+    public boolean inGameOverState() { return state.equals(GameState.gameOver); }
 
     /**
      * Get the current player who's turn it is
@@ -196,6 +206,11 @@ public class Game implements Serializable {
         return playerTurn == 1;
     }
 
+    /**
+     * Set the names of the players playing the game
+     * @param name1 player 1's name
+     * @param name2 player 2's name
+     */
     public void setPlayerNames(String name1, String name2) {
         player1 = new Player(name1);
         player2 = new Player(name2);
@@ -230,8 +245,13 @@ public class Game implements Serializable {
         advanceTurn();
     }
 
+    /**
+     * Set the passed player as the winner, and move the game into the final state
+     * @param winner the player who won
+     */
     private void declareWinner(Player winner) {
-
+        this.winner = winner;
+        state = GameState.gameOver;
     }
 
     /**
@@ -241,6 +261,18 @@ public class Game implements Serializable {
     public String getCurrentPlayerName() {
         return getCurrentPlayer().getName();
     }
+
+    /**
+     * Get the name of the player who won
+     * @return the name of the player who won
+     */
+    public String getWinningPlayerName() { return winner.getName(); }
+
+    /**
+     * Get the current round number (1 based)
+     * @return the current round number
+     */
+    public int getRoundNum() { return roundNum + 1; }
 
     /**
      * Draw the game
