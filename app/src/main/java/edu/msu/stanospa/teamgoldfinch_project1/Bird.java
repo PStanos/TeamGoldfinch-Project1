@@ -36,17 +36,19 @@ public class Bird implements Serializable {
     /**
      * x location
      */
-    private float x = 0.5f;
+    private float x = 0;
 
     /**
      * y location
      */
-    private float y = 0.5f;
+    private float y = 0;
 
 
     public Bird(Context context, int id) {
         this.id = id;
         bird = BitmapFactory.decodeResource(context.getResources(), id);
+        this.x = bird.getWidth()/2;
+        this.y = bird.getWidth()/2;
         //bird.move()
         rect = new Rect();
         setRect();
@@ -59,22 +61,23 @@ public class Bird implements Serializable {
         overlap = new Rect();
     }
 
-    public void move(float dx, float dy, float  gameSize, float scaleFactor) {
-        float birdMarginX = bird.getWidth()/(2*gameSize) * scaleFactor;
-        float birdMarginY = bird.getHeight()/(2*gameSize) * scaleFactor;
+    public void move(float dx, float dy, float  gameSize) {
+
+        float halfBirdX = bird.getWidth()/2;
+        float halfBirdY = bird.getHeight()/2;
 
         x += dx;
         y += dy;
 
-        if (x < birdMarginX)
-            x = birdMarginX;
-        else if (x > 1 - birdMarginX)
-            x = 1 - birdMarginX;
+        if (x - halfBirdX < 0)
+            x = 0;
+        else if (x + halfBirdX > gameSize)
+            x = gameSize - bird.getWidth();
 
-        if (y < birdMarginY)
-            y = birdMarginY;
-        else if (y > 1 - birdMarginY)
-            y = 1 - birdMarginY;
+        if (y - halfBirdY < 0)
+            y = 0;
+        else if (y + halfBirdY > gameSize)
+            y = gameSize - bird.getHeight();
 
         setRect();
     }
@@ -128,7 +131,7 @@ public class Bird implements Serializable {
      * @param other Bird to compare to.
      * @return True if there is any overlap between the two birds.
      */
-    public boolean collisionTest(Bird other, float gameSize, float scaleFactor) {
+    public boolean collisionTest(Bird other) {
         // Do the rectangles overlap?
         if(!Rect.intersects(rect, other.rect)) {
             return false;
@@ -140,13 +143,13 @@ public class Bird implements Serializable {
 
         // We have overlap. Now see if we have any pixels in common
         for(int r=overlap.top; r<overlap.bottom;  r++) {
-            int aY = (int)((r - getPY(gameSize, scaleFactor)));
-            int bY = (int)((r - other.getPY(gameSize, scaleFactor)));
+            int aY = (int)((r - y));
+            int bY = (int)((r - other.y));
 
             for(int c=overlap.left;  c<overlap.right;  c++) {
 
-                int aX = (int)((c - getPX(gameSize, scaleFactor)));
-                int bX = (int)((c - other.getPX(gameSize, scaleFactor)));
+                int aX = (int)((c - x));
+                int bX = (int)((c - other.x));
 
                 if( (bird.getPixel(aX, aY) & 0x80000000) != 0 &&
                         (other.bird.getPixel(bX, bY) & 0x80000000) != 0) {
@@ -159,13 +162,10 @@ public class Bird implements Serializable {
         return false;
     }
 
-    public void draw(Canvas canvas, int marginX, int marginY, int gameSize, float scaleFactor) {
+    public void draw(Canvas canvas, int marginX, int marginY) {
 
-        // draw the bird between saving and restoring the canvas state
         canvas.save();
-        canvas.translate(marginX + x * gameSize, marginY + y * gameSize);
-        canvas.scale(scaleFactor, scaleFactor);
-        // could easily put rotation in here
+        canvas.translate(marginX + x, marginY + y);
         canvas.translate(-bird.getWidth() / 2, -bird.getHeight() / 2);
         canvas.drawBitmap(bird, 0, 0, null);
         canvas.restore();
