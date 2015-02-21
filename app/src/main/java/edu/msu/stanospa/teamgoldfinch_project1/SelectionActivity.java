@@ -16,14 +16,24 @@ public class SelectionActivity extends ActionBarActivity {
     private SelectionView selectionView;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void onSaveInstanceState(Bundle bundle) {
+        super.onSaveInstanceState(bundle);
+
+        selectionView.saveInstanceState(bundle);
+    }
+
+    @Override
+    protected void onCreate(Bundle bundle) {
+        super.onCreate(bundle);
         setContentView(R.layout.activity_selection);
 
         game = (Game)getIntent().getExtras().getSerializable(getString(R.string.game_state));
         selectionView = (SelectionView)findViewById(R.id.selectionView);
 
-        //selectionView.setGame(game);
+        if (bundle != null){
+            Log.i("onCreate()", "restoring state...");
+            selectionView.loadInstanceState(bundle);
+        }
     }
 
 
