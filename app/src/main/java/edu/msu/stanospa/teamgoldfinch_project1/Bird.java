@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.util.Log;
 
 import java.io.Serializable;
 
@@ -33,22 +34,29 @@ public class Bird implements Serializable {
      */
     private int id;
 
+    private float relX;
+
+    private float relY;
+
     /**
      * x location
      */
-    private float x = 0;
+    private float x;
 
     /**
      * y location
      */
-    private float y = 0;
+    private float y;
 
 
-    public Bird(Context context, int id) {
+    public Bird(Context context, int id, float relX, float relY) {
         this.id = id;
         bird = BitmapFactory.decodeResource(context.getResources(), id);
-        this.x = bird.getWidth()/2;
-        this.y = bird.getWidth()/2;
+        this.relX = relX;
+        this.relY = relY;
+        x = 0;
+        y = 0;
+
         //bird.move()
         rect = new Rect();
         setRect();
@@ -70,14 +78,14 @@ public class Bird implements Serializable {
         y += dy;
 
         if (x - halfBirdX < 0)
-            x = 0;
+            x = halfBirdX;
         else if (x + halfBirdX > gameSize)
-            x = gameSize - bird.getWidth();
+            x = gameSize - halfBirdX;
 
         if (y - halfBirdY < 0)
-            y = 0;
+            y = halfBirdY;
         else if (y + halfBirdY > gameSize)
-            y = gameSize - bird.getHeight();
+            y = gameSize - halfBirdY;
 
         setRect();
     }
@@ -111,10 +119,8 @@ public class Bird implements Serializable {
     }
 
     public boolean hit(float testX, float testY, int gameSize, float scaleFactor) {
-        //int pX = (int)((testX - x));
-        //int pY = (int)((testY - y));
-        int pX = (int)((testX - x) * gameSize / scaleFactor) + bird.getWidth() / 2;
-        int pY = (int)((testY - y) * gameSize / scaleFactor) + bird.getHeight() / 2;
+        int pX = (int)((testX - x) + bird.getWidth()/2);
+        int pY = (int)((testY - y) + bird.getHeight()/2);
 
         if(pX < 0 || pX >= bird.getWidth() ||
                 pY < 0 || pY >= bird.getHeight()) {
@@ -162,7 +168,12 @@ public class Bird implements Serializable {
         return false;
     }
 
-    public void draw(Canvas canvas, int marginX, int marginY) {
+    public void draw(Canvas canvas, int marginX, int marginY, float gameSize) {
+
+        if (x == 0)
+            x = relX * gameSize;
+        if (y == 0)
+            y = relY * gameSize;
 
         canvas.save();
         canvas.translate(marginX + x, marginY + y);

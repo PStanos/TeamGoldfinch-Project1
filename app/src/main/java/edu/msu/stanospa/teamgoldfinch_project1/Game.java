@@ -296,11 +296,11 @@ public class Game implements Serializable {
         canvas.scale(scaleFactor, scaleFactor);
 
         for (Bird bird : birds) {
-            bird.draw(canvas, marginX, marginY);
+            bird.draw(canvas, marginX, marginY, gameSize);
         }
 
         if(dragging != null) {
-            dragging.draw(canvas, marginX, marginY);
+            dragging.draw(canvas, marginX, marginY, gameSize);
         }
 
         canvas.restore();
@@ -312,7 +312,7 @@ public class Game implements Serializable {
         }
 
         player1.getSelectedBird().reloadBitmap(context);
-        //player2.getSelectedBird().reloadBitmap(context);
+        player2.getSelectedBird().reloadBitmap(context);
 
         // Birds will be scaled so that the game is "1.5 ostriches" wide
         Bitmap scaleBird = BitmapFactory.decodeResource(context.getResources(), R.drawable.ostrich);
@@ -328,8 +328,8 @@ public class Game implements Serializable {
     public boolean onTouchEvent(View view, MotionEvent event) {
 
         // Convert an x,y location to a relative location in the puzzle
-        float relX = (event.getX() - marginX) / gameSize;
-        float relY = (event.getY() - marginY) / gameSize;
+        float relX = event.getX();
+        float relY = event.getY();
 
 
 
