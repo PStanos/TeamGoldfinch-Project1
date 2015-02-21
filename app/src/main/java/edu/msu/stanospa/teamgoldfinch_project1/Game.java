@@ -170,18 +170,21 @@ public class Game implements Serializable {
      */
     private void advanceTurn() {
         if(isSecondTurn()) {
+            playerTurn = 0;
+
             if(state == GameState.birdSelection) {
                 state = GameState.birdPlacement;
+                dragging = getCurrentPlayer().getSelectedBird();
             }
             else {
                 state = GameState.birdSelection;
+                dragging = null;
                 roundNum++;
             }
-
-            playerTurn = 0;
         }
         else {
             playerTurn = 1;
+            dragging = getCurrentPlayer().getSelectedBird();
         }
     }
 
@@ -197,11 +200,7 @@ public class Game implements Serializable {
         player1 = new Player(name1);
         player2 = new Player(name2);
 
-        player1.setSelectedBird(new Bird(context, R.drawable.ostrich));
-        player2.setSelectedBird(new Bird(context, R.drawable.seagull));
-
         state = GameState.birdSelection;
-        state = GameState.birdPlacement;
     }
 
     /**
@@ -269,7 +268,9 @@ public class Game implements Serializable {
             bird.draw(canvas, marginX, marginY, gameSize, scaleFactor);
         }
 
-        getCurrentPlayer().getSelectedBird().draw(canvas, marginX, marginY, gameSize, scaleFactor);
+        if(dragging != null) {
+            dragging.draw(canvas, marginX, marginY, gameSize, scaleFactor);
+        }
     }
 
     public void reloadBirds(Context context) {
