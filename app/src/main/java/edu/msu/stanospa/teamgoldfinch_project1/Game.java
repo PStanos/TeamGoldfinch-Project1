@@ -218,7 +218,8 @@ public class Game implements Serializable {
      * @param selection the bird selected to place this round
      */
     public void setPlayerSelection(Bird selection) {
-        getCurrentPlayer().setSelectedBird(selection);
+        Bird copyOfSelected = new Bird(selection);
+        getCurrentPlayer().setSelectedBird(copyOfSelected);
 
         advanceTurn();
     }
