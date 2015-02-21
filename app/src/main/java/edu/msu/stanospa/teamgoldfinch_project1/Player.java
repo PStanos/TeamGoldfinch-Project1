@@ -41,7 +41,7 @@ public class Player implements Serializable {
      * @param selectedBird the selected bird
      */
     public void setSelectedBird(Bird selectedBird) {
-        Log.i("setSelectedBird()", "bird set!");
+        Log.i("setSelectedBird()", "bird set!" + selectedBird);
         this.selectedBird = selectedBird;
     }
 
