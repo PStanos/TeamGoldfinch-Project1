@@ -159,7 +159,7 @@ public class Bird implements Serializable {
 
                 if( (bird.getPixel(aX, aY) & 0x80000000) != 0 &&
                         (other.bird.getPixel(bX, bY) & 0x80000000) != 0) {
-                    //Log.i("collision", "Overlap " + r + "," + c);
+                    Log.i("collision", "Overlap " + r + "," + c);
                     return true;
                 }
             }
@@ -177,7 +177,7 @@ public class Bird implements Serializable {
 
         canvas.save();
         canvas.translate(marginX + x, marginY + y);
-        canvas.translate(-bird.getWidth() / 2, -bird.getHeight() / 2);
+        //canvas.translate(-bird.getWidth() / 2, -bird.getHeight() / 2);
         canvas.drawBitmap(bird, 0, 0, null);
         canvas.restore();
     }

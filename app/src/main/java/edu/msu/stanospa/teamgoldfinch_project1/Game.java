@@ -287,13 +287,16 @@ public class Game implements Serializable {
 
         scaleFactor = gameSize/scalingWidth;
 
+
         canvas.save();
+
+        //canvas.scale(1/scaleFactor, 1/scaleFactor);
 
         // Draw the outline of the gameplay area
         canvas.drawRect(marginX - BORDER_WIDTH, marginY - BORDER_WIDTH,
                 marginX + gameSize + BORDER_WIDTH, marginY + gameSize + BORDER_WIDTH, outlinePaint);
 
-        canvas.scale(scaleFactor, scaleFactor);
+
 
         for (Bird bird : birds) {
             bird.draw(canvas, marginX, marginY, gameSize);

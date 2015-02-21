@@ -68,6 +68,10 @@ public class GameActivity extends ActionBarActivity {
             intent.putExtras(bundle);
             startActivity(intent);
         }
+
+        //if (gameView.inGameoverState()) {
+
+
     }
 
     @Override
