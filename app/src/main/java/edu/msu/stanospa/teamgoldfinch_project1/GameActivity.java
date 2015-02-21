@@ -1,6 +1,7 @@
 package edu.msu.stanospa.teamgoldfinch_project1;
 
 import android.content.Intent;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -15,6 +16,8 @@ public class GameActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();
         setContentView(R.layout.activity_game);
         Game game = (Game)getIntent().getExtras().getSerializable(getString(R.string.game_state));
         gameView = (GameView)findViewById(R.id.gameView);
@@ -32,7 +35,7 @@ public class GameActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_game, menu);
+        // getMenuInflater().inflate(R.menu.menu_game, menu);
         return true;
     }
 
@@ -50,12 +53,17 @@ public class GameActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
     public void onPlaceBird(View view) {
-        GameView gView = (GameView) findViewById(R.id.gameView);
-        gView.onPlaceBird();
+        gameView.onPlaceBird();
 
         if (gameView.inSelectionState()) {
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(getString(R.string.game_state), gameView.getGame());
+
             Intent intent = new Intent(this, FinalScoreActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtras(bundle);
             startActivity(intent);
         }
     }
@@ -63,6 +71,7 @@ public class GameActivity extends ActionBarActivity {
     @Override
     protected void onSaveInstanceState(Bundle bundle) {
         super.onSaveInstanceState(bundle);
+
         gameView.saveInstanceState(bundle);
     }
 }

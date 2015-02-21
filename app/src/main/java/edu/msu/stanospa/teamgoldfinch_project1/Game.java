@@ -128,7 +128,7 @@ public class Game implements Serializable {
         scalingWidth = scaleBird.getWidth()*1.5f;
 
         // load the temp bird image
-        birds.add(new Bird(context, R.drawable.ostrich));
+        birds.add(new Bird(context, R.drawable.hummingbird));
         birds.add(new Bird(context, R.drawable.parrot));
         birds.add(new Bird(context, R.drawable.seagull));
         dragging = birds.get(0);
@@ -307,7 +307,6 @@ public class Game implements Serializable {
                 break;
 
             case MotionEvent.ACTION_MOVE:
-                System.out.println("moving");
                 if (dragging != null) {
                     dragging.move(relX - lastRelX, relY - lastRelY, gameSize, scaleFactor);
                     lastRelX = relX;
