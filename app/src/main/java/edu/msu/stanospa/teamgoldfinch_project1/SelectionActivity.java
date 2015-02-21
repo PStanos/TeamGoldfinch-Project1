@@ -45,8 +45,7 @@ public class SelectionActivity extends ActionBarActivity {
 
     public void onConfirmSelection(View view) {
         Bundle bundle = new Bundle();
-        bundle.putSerializable(getString(R.string.game_state), game);
-
+        game.saveInstanceState(bundle, this);
 
         Intent intent = new Intent(this, GameActivity.class);
         intent.putExtras(bundle);

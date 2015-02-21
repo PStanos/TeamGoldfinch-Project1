@@ -56,6 +56,7 @@ public class GameView extends View {
 
     public void onPlaceBird() {
         game.confirmBirdPlacement();
+        invalidate();
     }
 
     public void reloadBirds() {
@@ -69,8 +70,8 @@ public class GameView extends View {
         game.draw(canvas);
     }
 
-    public void saveInstanceState(Bundle bundle) { game.saveInstanceState(bundle); }
+    public void saveInstanceState(Bundle bundle, Context context) { game.saveInstanceState(bundle, context); }
 
-    public void loadInstanceState(Bundle bundle) { game.loadInstanceState(bundle); }
+    public void loadInstanceState(Bundle bundle, Context context) { setGame((Game)bundle.getSerializable(context.getString(R.string.game_state))); }
 
 }

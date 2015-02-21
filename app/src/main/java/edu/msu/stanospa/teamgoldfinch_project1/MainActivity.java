@@ -50,7 +50,7 @@ public class MainActivity extends ActionBarActivity {
         game.setPlayerNames(name1, name2);
 
         Bundle bundle = new Bundle();
-        bundle.putSerializable(getString(R.string.game_state), game);
+        game.saveInstanceState(bundle, this);
 
         Intent intent = new Intent(this, SelectionActivity.class);
         intent.putExtras(bundle);

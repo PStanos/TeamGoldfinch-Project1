@@ -112,10 +112,13 @@ public class Game implements Serializable {
      */
     private GameState state = GameState.birdSelection;
 
+    private transient Context context;
+
     /**
      * @param context the current context
      */
     public Game(Context context) {
+        this.context = context;
 
         // Create the paint for outlining the play area
         outlinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -128,14 +131,14 @@ public class Game implements Serializable {
         scalingWidth = scaleBird.getWidth()*1.5f;
 
         // load the temp bird image
-        birds.add(new Bird(context, R.drawable.hummingbird));
-        birds.add(new Bird(context, R.drawable.parrot));
-        birds.add(new Bird(context, R.drawable.seagull));
-        dragging = birds.get(0);
+        //birds.add(new Bird(context, R.drawable.ostrich));
+        //birds.add(new Bird(context, R.drawable.parrot));
+        //birds.add(new Bird(context, R.drawable.seagull));
+        //dragging = birds.get(0);
     }
 
     public boolean inSelectionState() {
-        return state == GameState.birdSelection;
+        return state.equals(GameState.birdSelection);
     }
 
     /**
@@ -148,8 +151,8 @@ public class Game implements Serializable {
             else return player2;
         }
         else {
-            if(roundNum % 2 == 1) return player2;
-            else return player1;
+            if(roundNum % 2 == 1) return player1;
+            else return player2;
         }
     }
 
@@ -194,7 +197,11 @@ public class Game implements Serializable {
         player1 = new Player(name1);
         player2 = new Player(name2);
 
+        player1.setSelectedBird(new Bird(context, R.drawable.ostrich));
+        player2.setSelectedBird(new Bird(context, R.drawable.seagull));
+
         state = GameState.birdSelection;
+        state = GameState.birdPlacement;
     }
 
     /**
@@ -213,7 +220,7 @@ public class Game implements Serializable {
     public void confirmBirdPlacement() {
         // Check to see if the player's bird collides with any other bird
         for(int itr = 0; itr < birds.size(); itr++) {
-            if(getCurrentPlayer().getSelectedBird().collisionTest(birds.get(itr))) {
+            if(getCurrentPlayer().getSelectedBird().collisionTest(birds.get(itr), gameSize, scaleFactor)) {
                 declareWinner(getNextPlayer());
                 return;
             }
@@ -229,19 +236,11 @@ public class Game implements Serializable {
     }
 
     /**
-     * Gets text to display to the player when they need to select a bird
-     * @return the text to tell the player to select their bird
+     * Gets the current player's name
+     * @return the player's name
      */
-    public String getBirdSelectionText() {
-        return "Select your bird " + getCurrentPlayer().getName();
-    }
-
-    /**
-     * Gets text to display to the player when they need to place a bird
-     * @return the text to tell the player to place their bird
-     */
-    public String getBirdPlacementText() {
-        return "Place your bird " + getCurrentPlayer().getName();
+    public String getCurrentPlayerName() {
+        return getCurrentPlayer().getName();
     }
 
     /**
@@ -269,12 +268,17 @@ public class Game implements Serializable {
         for (Bird bird : birds) {
             bird.draw(canvas, marginX, marginY, gameSize, scaleFactor);
         }
+
+        getCurrentPlayer().getSelectedBird().draw(canvas, marginX, marginY, gameSize, scaleFactor);
     }
 
     public void reloadBirds(Context context) {
         for (Bird bird : birds) {
             bird.reloadBitmap(context);
         }
+
+        player1.getSelectedBird().reloadBitmap(context);
+        player2.getSelectedBird().reloadBitmap(context);
 
         // Birds will be scaled so that the game is "1.5 ostriches" wide
         Bitmap scaleBird = BitmapFactory.decodeResource(context.getResources(), R.drawable.ostrich);
@@ -319,25 +323,7 @@ public class Game implements Serializable {
 
         return false;
     }
-    public void saveInstanceState(Bundle bundle) {
-        float [] locations = new float[birds.size() * 2];
-
-        for (int i = 0; i < birds.size(); i++) {
-            Bird bird = birds.get(i);
-            locations[i*2] = bird.getX();
-            locations[i*2+1] = bird.getY();
-        }
-
-        bundle.putFloatArray(LOCATIONS, locations);
-    }
-
-    public void loadInstanceState(Bundle bundle) {
-        float [] locations = bundle.getFloatArray(LOCATIONS);
-
-        for (int i = 0; i < birds.size(); i++) {
-            Bird bird = birds.get(i);
-            bird.setX(locations[i*2]);
-            bird.setY(locations[i*2+1]);
-        }
+    public void saveInstanceState(Bundle bundle, Context context) {
+        bundle.putSerializable(context.getString(R.string.game_state), this);
     }
 }

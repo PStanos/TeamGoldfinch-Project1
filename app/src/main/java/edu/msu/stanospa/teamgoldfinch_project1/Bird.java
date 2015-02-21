@@ -56,6 +56,7 @@ public class Bird implements Serializable {
         bird = BitmapFactory.decodeResource(context.getResources(), id);
         rect = new Rect();
         setRect();
+        overlap = new Rect();
     }
 
     public void move(float dx, float dy, float  gameSize, float scaleFactor) {
@@ -94,6 +95,14 @@ public class Bird implements Serializable {
         this.y = y;
     }
 
+    public int getPX(float gameSize, float scaleFactor) {
+        return (int)(x * gameSize / scaleFactor) + bird.getWidth() / 2;
+    }
+
+    public int getPY(float gameSize, float scaleFactor) {
+        return (int)(y * gameSize / scaleFactor) + bird.getHeight() / 2;
+    }
+
     private void setRect() {
         rect.set((int)x, (int)y, (int)x+bird.getWidth(), (int)y+bird.getHeight());
     }
@@ -120,7 +129,7 @@ public class Bird implements Serializable {
      * @param other Bird to compare to.
      * @return True if there is any overlap between the two birds.
      */
-    public boolean collisionTest(Bird other) {
+    public boolean collisionTest(Bird other, float gameSize, float scaleFactor) {
         // Do the rectangles overlap?
         if(!Rect.intersects(rect, other.rect)) {
             return false;
@@ -132,13 +141,13 @@ public class Bird implements Serializable {
 
         // We have overlap. Now see if we have any pixels in common
         for(int r=overlap.top; r<overlap.bottom;  r++) {
-            int aY = (int)((r - y));
-            int bY = (int)((r - other.y));
+            int aY = (int)((r - getPY(gameSize, scaleFactor)));
+            int bY = (int)((r - other.getPY(gameSize, scaleFactor)));
 
             for(int c=overlap.left;  c<overlap.right;  c++) {
 
-                int aX = (int)((c - x));
-                int bX = (int)((c - other.x));
+                int aX = (int)((c - getPX(gameSize, scaleFactor)));
+                int bX = (int)((c - other.getPX(gameSize, scaleFactor)));
 
                 if( (bird.getPixel(aX, aY) & 0x80000000) != 0 &&
                         (other.bird.getPixel(bX, bY) & 0x80000000) != 0) {

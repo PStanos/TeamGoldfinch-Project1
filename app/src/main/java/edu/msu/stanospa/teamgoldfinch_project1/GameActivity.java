@@ -19,16 +19,18 @@ public class GameActivity extends ActionBarActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
         setContentView(R.layout.activity_game);
-        Game game = (Game)getIntent().getExtras().getSerializable(getString(R.string.game_state));
+
         gameView = (GameView)findViewById(R.id.gameView);
-        gameView.setGame(game);
 
-        gameView.reloadBirds();
-
-        if (bundle != null) {
-            gameView.loadInstanceState(bundle);
+        if(bundle != null) {
+            gameView.loadInstanceState(bundle, this);
+        }
+        else {
+            Game game = (Game)getIntent().getExtras().getSerializable(getString(R.string.game_state));
+            gameView.setGame(game);
         }
 
+        gameView.reloadBirds();
     }
 
 
@@ -59,9 +61,9 @@ public class GameActivity extends ActionBarActivity {
 
         if (gameView.inSelectionState()) {
             Bundle bundle = new Bundle();
-            bundle.putSerializable(getString(R.string.game_state), gameView.getGame());
+            gameView.getGame().saveInstanceState(bundle, this);
 
-            Intent intent = new Intent(this, FinalScoreActivity.class);
+            Intent intent = new Intent(this, SelectionActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.putExtras(bundle);
             startActivity(intent);
@@ -72,6 +74,6 @@ public class GameActivity extends ActionBarActivity {
     protected void onSaveInstanceState(Bundle bundle) {
         super.onSaveInstanceState(bundle);
 
-        gameView.saveInstanceState(bundle);
+        gameView.saveInstanceState(bundle, this);
     }
 }
