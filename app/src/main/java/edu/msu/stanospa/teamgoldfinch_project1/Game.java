@@ -219,7 +219,7 @@ public class Game implements Serializable {
     public void confirmBirdPlacement() {
         // Check to see if the player's bird collides with any other bird
         for(int itr = 0; itr < birds.size(); itr++) {
-            if(getCurrentPlayer().getSelectedBird().collisionTest(birds.get(itr), gameSize, scaleFactor)) {
+            if(getCurrentPlayer().getSelectedBird().collisionTest(birds.get(itr))) {
                 declareWinner(getNextPlayer());
                 return;
             }
@@ -258,19 +258,25 @@ public class Game implements Serializable {
         marginX = (width - gameSize) / 2;
         marginY = (height - gameSize) / 2;
 
+        scaleFactor = gameSize/scalingWidth;
+
+        canvas.save();
+
         // Draw the outline of the gameplay area
         canvas.drawRect(marginX - BORDER_WIDTH, marginY - BORDER_WIDTH,
                 marginX + gameSize + BORDER_WIDTH, marginY + gameSize + BORDER_WIDTH, outlinePaint);
 
-        scaleFactor = gameSize/scalingWidth;
+        canvas.scale(scaleFactor, scaleFactor);
 
         for (Bird bird : birds) {
-            bird.draw(canvas, marginX, marginY, gameSize, scaleFactor);
+            bird.draw(canvas, marginX, marginY);
         }
 
         if(dragging != null) {
-            dragging.draw(canvas, marginX, marginY, gameSize, scaleFactor);
+            dragging.draw(canvas, marginX, marginY);
         }
+
+        canvas.restore();
     }
 
     public void reloadBirds(Context context) {
@@ -279,7 +285,7 @@ public class Game implements Serializable {
         }
 
         player1.getSelectedBird().reloadBitmap(context);
-        player2.getSelectedBird().reloadBitmap(context);
+        //player2.getSelectedBird().reloadBitmap(context);
 
         // Birds will be scaled so that the game is "1.5 ostriches" wide
         Bitmap scaleBird = BitmapFactory.decodeResource(context.getResources(), R.drawable.ostrich);
@@ -313,7 +319,7 @@ public class Game implements Serializable {
 
             case MotionEvent.ACTION_MOVE:
                 if (dragging != null) {
-                    dragging.move(relX - lastRelX, relY - lastRelY, gameSize, scaleFactor);
+                    dragging.move(relX - lastRelX, relY - lastRelY, gameSize);
                     lastRelX = relX;
                     lastRelY = relY;
                     view.invalidate();

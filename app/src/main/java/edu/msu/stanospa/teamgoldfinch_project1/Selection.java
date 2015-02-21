@@ -126,7 +126,7 @@ public class Selection {
         canvas.restore();
 
         for (Bird bird : birds) {
-            bird.draw(canvas, marginX, marginY, gameSize, scaleFactor);
+            bird.draw(canvas, marginX, marginY);
         }
 
 
