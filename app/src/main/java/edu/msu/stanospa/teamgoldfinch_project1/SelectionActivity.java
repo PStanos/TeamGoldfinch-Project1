@@ -16,6 +16,8 @@ public class SelectionActivity extends ActionBarActivity {
 
     private SelectionView selectionView;
 
+    private TextView selectionText;
+
     @Override
     protected void onSaveInstanceState(Bundle bundle) {
         super.onSaveInstanceState(bundle);
@@ -37,7 +39,8 @@ public class SelectionActivity extends ActionBarActivity {
         }
         selectionView = (SelectionView)findViewById(R.id.selectionView);
 
-        //TextView selectionText = (TextView) findViewById(R.)
+        this.selectionText = (TextView) findViewById(R.id.playerNameLabel);
+        setPlayerSelectionText();
 
         if (bundle != null){
             Log.i("onCreate()", "restoring state...");
@@ -45,6 +48,12 @@ public class SelectionActivity extends ActionBarActivity {
         }
     }
 
+    /**
+     * set the text at the top of the selection screen to the appropriate player
+     */
+    private void setPlayerSelectionText() {
+        selectionText.setText(game.getCurrentPlayerName() + " " + getString(R.string.player_select));
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -74,6 +83,7 @@ public class SelectionActivity extends ActionBarActivity {
 
         if (selectionView.isSelected()) {
             selectionView.setPlayerSelection(game);
+            setPlayerSelectionText();
 
             if (!game.inSelectionState()){
                 Intent intent = new Intent(this, GameActivity.class);
