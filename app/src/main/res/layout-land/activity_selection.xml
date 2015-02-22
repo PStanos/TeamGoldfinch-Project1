@@ -25,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/player_1_select"
+            android:text="@string/player_select"
             android:id="@+id/playerNameLabel"
             android:layout_gravity="center_horizontal|top"
             android:textSize="28sp" />

@@ -21,7 +21,7 @@
     <string name="rounds_played">The game lasted %d rounds!</string>
     <string name="new_game">New Game</string>
     <string name="place_bird">Place Bird</string>
-    <string name="player_1_select">Player 1 Select Your Bird!</string>
+    <string name="player_select">Select Your Bird!</string>
     <string name="game_state">game_state</string>
     <string name="seagull_accessibility">Seagull</string>
 
