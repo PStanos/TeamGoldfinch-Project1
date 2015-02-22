@@ -21,6 +21,7 @@ public class SelectionActivity extends ActionBarActivity {
         super.onSaveInstanceState(bundle);
 
         selectionView.saveInstanceState(bundle);
+        game.saveInstanceState(bundle, this);
     }
 
     @Override
@@ -28,7 +29,12 @@ public class SelectionActivity extends ActionBarActivity {
         super.onCreate(bundle);
         setContentView(R.layout.activity_selection);
 
-        game = (Game)getIntent().getExtras().getSerializable(getString(R.string.game_state));
+        if(bundle != null) {
+            game = (Game)bundle.getSerializable(getString(R.string.game_state));
+        }
+        else {
+            game = (Game)getIntent().getExtras().getSerializable(getString(R.string.game_state));
+        }
         selectionView = (SelectionView)findViewById(R.id.selectionView);
 
         //TextView selectionText = (TextView) findViewById(R.)
