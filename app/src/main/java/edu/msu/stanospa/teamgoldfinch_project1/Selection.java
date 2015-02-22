@@ -22,6 +22,8 @@ public class Selection {
      */
     private final static float SCALE_IN_VIEW = 0.9f;
 
+    private final static float BORDER_WIDTH = 3.0f;
+
     /**
      * The size of the game field
      */
@@ -77,7 +79,7 @@ public class Selection {
         outlinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         outlinePaint.setStyle(Paint.Style.STROKE);
         outlinePaint.setStrokeWidth(3.0f);
-        outlinePaint.setColor(Color.RED);
+        outlinePaint.setColor(Color.GREEN);
 
         // Birds will be scaled so that the game is "1.5 ostriches" wide
         Bitmap scaleBird = BitmapFactory.decodeResource(context.getResources(), R.drawable.ostrich);
@@ -85,11 +87,11 @@ public class Selection {
 
 
         // load the bird images
-        birds.add(new Bird(context, R.drawable.ostrich, 0.359f, 0.480f));
-        birds.add(new Bird(context, R.drawable.swallow, 0.806f, 0.158f));
+        birds.add(new Bird(context, R.drawable.ostrich, 0.0650f, 0.150f));
+        birds.add(new Bird(context, R.drawable.swallow, 0.736f, 0.158f));
         birds.add(new Bird(context, R.drawable.robin, 0.841f, 0.451f));
         birds.add(new Bird(context, R.drawable.hummingbird, 0.158f, 0.119f));
-        birds.add(new Bird(context, R.drawable.seagull, 0.710f, 0.701f));
+        birds.add(new Bird(context, R.drawable.seagull, 0.650f, 0.701f));
 
     }
 
@@ -99,21 +101,27 @@ public class Selection {
         int height = canvas.getHeight();
 
         // The puzzle size is the view scale ratio of the minimum dimension, to make it square
-        gameSize = (int)((width < height ? width : height) * SCALE_IN_VIEW);
+        int minSide = (int)((width < height ? width : height) * SCALE_IN_VIEW);
+
+        scaleFactor = minSide/scalingWidth;
 
         // Margins for centering the puzzle
-        marginX = (width - gameSize) / 2;
-        marginY = (height - gameSize) / 2;
+        marginX = (int)((width - minSide) / (scaleFactor*2));
+        marginY = (int)((height - minSide) / (scaleFactor*2));
 
-        // Draw the outline of the gameplay area
-        canvas.drawRect(marginX, marginY, marginX + gameSize, marginY + gameSize, outlinePaint);
 
-        scaleFactor = (float)gameSize/scalingWidth;
+        gameSize = (int)scalingWidth;
+
 
         canvas.save();
-        canvas.translate(marginX, marginY);
+
         canvas.scale(scaleFactor, scaleFactor);
-        canvas.restore();
+
+        // Draw the outline of the gameplay area
+        canvas.drawRect(marginX - BORDER_WIDTH, marginY - BORDER_WIDTH,
+                marginX + gameSize + BORDER_WIDTH, marginY + gameSize + BORDER_WIDTH, outlinePaint);
+
+
 
         for (Bird bird : birds) {
             bird.draw(canvas, marginX, marginY, gameSize);

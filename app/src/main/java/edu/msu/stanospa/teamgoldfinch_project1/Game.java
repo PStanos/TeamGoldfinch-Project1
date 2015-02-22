@@ -34,7 +34,7 @@ public class Game implements Serializable {
     /**
      * Width of the border around the game
      */
-    private final static float BORDER_WIDTH = 3;
+    private final static float BORDER_WIDTH = 3.0f;
 
     /**
      * Paint for outlining the area the game is in
@@ -280,18 +280,21 @@ public class Game implements Serializable {
         int height = canvas.getHeight();
 
         // The puzzle size is the view scale ratio of the minimum dimension, to make it square
-        gameSize = (int)((width < height ? width : height) * SCALE_IN_VIEW);
+        int minSide = (int)((width < height ? width : height) * SCALE_IN_VIEW);
+
+        scaleFactor = minSide/scalingWidth;
 
         // Margins for centering the puzzle
-        marginX = (width - gameSize) / 2;
-        marginY = (height - gameSize) / 2;
+        marginX = (int)((width - minSide) / (scaleFactor*2));
+        marginY = (int)((height - minSide) / (scaleFactor*2));
 
-        scaleFactor = gameSize/scalingWidth;
+
+        gameSize = (int)scalingWidth;
 
 
         canvas.save();
 
-        //canvas.scale(1/scaleFactor, 1/scaleFactor);
+        canvas.scale(scaleFactor, scaleFactor);
 
         // Draw the outline of the gameplay area
         canvas.drawRect(marginX - BORDER_WIDTH, marginY - BORDER_WIDTH,
@@ -350,7 +353,7 @@ public class Game implements Serializable {
 
             case MotionEvent.ACTION_MOVE:
                 if (dragging != null) {
-                    dragging.move(relX - lastRelX, relY - lastRelY, gameSize);
+                    dragging.move((relX - lastRelX) * 1/scaleFactor, (relY - lastRelY) * 1/scaleFactor, gameSize);
                     lastRelX = relX;
                     lastRelY = relY;
                     view.invalidate();

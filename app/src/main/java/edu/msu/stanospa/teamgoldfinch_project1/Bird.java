@@ -54,8 +54,8 @@ public class Bird implements Serializable {
         bird = BitmapFactory.decodeResource(context.getResources(), id);
         this.relX = relX;
         this.relY = relY;
-        x = 0;
-        y = 0;
+        x = -1;
+        y = -1;
 
         //bird.move()
         rect = new Rect();
@@ -81,23 +81,23 @@ public class Bird implements Serializable {
         overlap = new Rect();
     }
 
-    public void move(float dx, float dy, float  gameSize) {
+    public void move(float dx, float dy, float gameSize) {
 
-        float halfBirdX = bird.getWidth()/2;
-        float halfBirdY = bird.getHeight()/2;
+        float width = bird.getWidth();
+        float height = bird.getHeight();
 
         x += dx;
         y += dy;
 
-        if (x - halfBirdX < 0)
-            x = halfBirdX;
-        else if (x + halfBirdX > gameSize)
-            x = gameSize - halfBirdX;
+        if (x < 0)
+            x = 0;
+        else if (x + width > gameSize)
+            x = gameSize - width;
 
-        if (y - halfBirdY < 0)
-            y = halfBirdY;
-        else if (y + halfBirdY > gameSize)
-            y = gameSize - halfBirdY;
+        if (y < 0)
+            y = 0;
+        else if (y + height > gameSize)
+            y = gameSize - height;
 
         setRect();
     }
@@ -131,8 +131,8 @@ public class Bird implements Serializable {
     }
 
     public boolean hit(float testX, float testY, int gameSize, float scaleFactor) {
-        int pX = (int)((testX - x) + bird.getWidth()/2);
-        int pY = (int)((testY - y) + bird.getHeight()/2);
+        int pX = (int)(testX - x);
+        int pY = (int)(testY - y);
 
         if(pX < 0 || pX >= bird.getWidth() ||
                 pY < 0 || pY >= bird.getHeight()) {
@@ -182,9 +182,9 @@ public class Bird implements Serializable {
 
     public void draw(Canvas canvas, int marginX, int marginY, float gameSize) {
 
-        if (x == 0)
-            x = relX * gameSize;
-        if (y == 0)
+        if (x == -1)
+            x = relX  * gameSize;
+        if (y == -1)
             y = relY * gameSize;
 
         canvas.save();

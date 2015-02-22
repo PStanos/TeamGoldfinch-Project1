@@ -83,13 +83,15 @@ public class SelectionActivity extends ActionBarActivity {
 
         if (selectionView.isSelected()) {
             selectionView.setPlayerSelection(game);
-            setPlayerSelectionText();
 
             if (!game.inSelectionState()){
                 Intent intent = new Intent(this, GameActivity.class);
                 intent.putExtras(bundle);
                 startActivity(intent);
+                finish();
             }
+            else
+                setPlayerSelectionText();
 
         } else {
             Log.i("onConfirmSelection", "bird not selected");

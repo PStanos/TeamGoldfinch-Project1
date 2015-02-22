@@ -7,9 +7,11 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 
 public class GameActivity extends ActionBarActivity {
+
 
     private GameView gameView;
 
@@ -29,6 +31,10 @@ public class GameActivity extends ActionBarActivity {
             Game game = (Game)getIntent().getExtras().getSerializable(getString(R.string.game_state));
             gameView.setGame(game);
         }
+
+        TextView tv = (TextView)findViewById(R.id.placementText);
+        tv.setText(String.format(getString(R.string.bird_placement_info),
+                gameView.getGame().getCurrentPlayerName()));
 
         gameView.reloadBirds();
     }
@@ -59,17 +65,30 @@ public class GameActivity extends ActionBarActivity {
     public void onPlaceBird(View view) {
         gameView.onPlaceBird();
 
-        if (gameView.inSelectionState()) {
-            Bundle bundle = new Bundle();
-            gameView.getGame().saveInstanceState(bundle, this);
+        Bundle bundle = new Bundle();
+        gameView.getGame().saveInstanceState(bundle, this);
+
+        if (gameView.inGameOverState()) {
+
+            Intent intent = new Intent(this, FinalScoreActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtras(bundle);
+            startActivity(intent);
+            finish();
+        }
+
+        else if (gameView.inSelectionState()) {
 
             Intent intent = new Intent(this, SelectionActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.putExtras(bundle);
             startActivity(intent);
+            finish();
         }
 
-        //if (gameView.inGameoverState()) {
+        TextView tv = (TextView)findViewById(R.id.placementText);
+        tv.setText(String.format(getString(R.string.bird_placement_info),
+                gameView.getGame().getCurrentPlayerName()));
 
 
     }

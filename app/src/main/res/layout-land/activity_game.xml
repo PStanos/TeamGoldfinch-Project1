@@ -10,11 +10,28 @@
         android:id="@+id/gameView"
         android:layout_weight=".9" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/place_bird"
-        android:id="@+id/placeBird"
-        android:layout_gravity="center_vertical"
-        android:onClick="onPlaceBird" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:layout_weight=".5"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/bird_placement_info"
+            android:id="@+id/placementText" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/place_bird"
+            android:id="@+id/placeBird"
+            android:layout_gravity="center"
+            android:onClick="onPlaceBird"
+            android:layout_marginTop="20dp" />
+    </LinearLayout>
+
 </LinearLayout>

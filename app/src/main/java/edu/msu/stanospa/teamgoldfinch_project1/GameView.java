@@ -49,6 +49,10 @@ public class GameView extends View {
         return game.inSelectionState();
     }
 
+    public boolean inGameOverState() {
+        return game.inGameOverState();
+    }
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         return game.onTouchEvent(this, event);
