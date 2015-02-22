@@ -52,8 +52,8 @@ public class Bird implements Serializable {
     public Bird(Context context, int id, float relX, float relY) {
         this.id = id;
         bird = BitmapFactory.decodeResource(context.getResources(), id);
-        this.relX = relX;
-        this.relY = relY;
+        this.relX = 0.5f;
+        this.relY = 0.5f;
         x = -1;
         y = -1;
 
@@ -67,8 +67,8 @@ public class Bird implements Serializable {
         this.bird = copy.bird;
         this.relX = copy.relX;
         this.relY = copy.relY;
-        x = 0;
-        y = 0;
+        x = -1;
+        y = -1;
 
         rect = new Rect();
         setRect();
@@ -100,30 +100,6 @@ public class Bird implements Serializable {
             y = gameSize - height;
 
         setRect();
-    }
-
-    public float getX() {
-        return x;
-    }
-
-    public void setX(float x) {
-        this.x = x;
-    }
-
-    public float getY() {
-        return y;
-    }
-
-    public void setY(float y) {
-        this.y = y;
-    }
-
-    public int getPX(float gameSize, float scaleFactor) {
-        return (int)(x * gameSize / scaleFactor) + bird.getWidth() / 2;
-    }
-
-    public int getPY(float gameSize, float scaleFactor) {
-        return (int)(y * gameSize / scaleFactor) + bird.getHeight() / 2;
     }
 
     private void setRect() {
@@ -183,9 +159,9 @@ public class Bird implements Serializable {
     public void draw(Canvas canvas, int marginX, int marginY, float gameSize) {
 
         if (x == -1)
-            x = relX  * gameSize;
+            x = (relX  * gameSize) - (relX * bird.getWidth());
         if (y == -1)
-            y = relY * gameSize;
+            y = (relY * gameSize) - (relY * bird.getHeight());
 
         canvas.save();
         canvas.translate(marginX + x, marginY + y);
