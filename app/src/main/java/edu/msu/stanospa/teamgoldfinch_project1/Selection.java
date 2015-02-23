@@ -127,6 +127,8 @@ public class Selection {
             bird.draw(canvas, marginX, marginY, gameSize);
         }
 
+        canvas.restore();
+
 
     }
 
@@ -137,8 +139,8 @@ public class Selection {
      * @return true if the touch is handled.
      */
     public boolean onTouchEvent(View view, MotionEvent event) {
-        float relX = (event.getX() - marginX);
-        float relY = (event.getY() - marginY);
+        float relX = (event.getX()/scaleFactor - marginX);
+        float relY = (event.getY()/scaleFactor - marginY);
 
         switch (event.getActionMasked()) {
 
