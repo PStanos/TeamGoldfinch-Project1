@@ -265,10 +265,10 @@ public class Game implements Serializable {
     public String getWinningPlayerName() { return winner.getName(); }
 
     /**
-     * Get the current round number (1 based)
-     * @return the current round number
+     * Get the current number of birds placed
+     * @return the current number of birds placed
      */
-    public int getRoundNum() { return roundNum + 1; }
+    public int getNumBirdsPlaced() { return birds.size(); }
 
     /**
      * Draw the game

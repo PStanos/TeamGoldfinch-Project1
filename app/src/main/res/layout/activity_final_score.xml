@@ -37,8 +37,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/rounds_played"
-            android:id="@+id/roundText"
+            android:text="@string/birds_placed"
+            android:id="@+id/birdText"
             android:textSize="24sp" />
 
         <Button

@@ -25,7 +25,7 @@ public class FinalScoreActivity extends ActionBarActivity {
         }
 
         ((TextView)findViewById(R.id.winningPlayerText)).setText(String.format(getString(R.string.player_wins), game.getWinningPlayerName()));
-        ((TextView)findViewById(R.id.roundText)).setText(String.format(getString(R.string.rounds_played), game.getRoundNum()));
+        ((TextView)findViewById(R.id.birdText)).setText(String.format(getString(R.string.birds_placed), game.getNumBirdsPlaced()));
     }
 
 

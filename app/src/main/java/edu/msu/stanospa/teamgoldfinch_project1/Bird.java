@@ -14,6 +14,8 @@ import java.io.Serializable;
  * load the bird image and to do collision detection against another bird.
  */
 public class Bird implements Serializable {
+    private static final long serialVersionUID = 3L;
+
     /**
      * The image for the actual bird.
      */
