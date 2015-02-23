@@ -158,10 +158,11 @@ public class Bird implements Serializable {
 
     public void draw(Canvas canvas, int marginX, int marginY, float gameSize) {
 
-        if (x == -1)
-            x = (relX  * gameSize) - (relX * bird.getWidth());
-        if (y == -1)
+        if (x == -1 && y == -1) {
+            x = (relX * gameSize) - (relX * bird.getWidth());
             y = (relY * gameSize) - (relY * bird.getHeight());
+            setRect();
+        }
 
         canvas.save();
         canvas.translate(marginX + x, marginY + y);
