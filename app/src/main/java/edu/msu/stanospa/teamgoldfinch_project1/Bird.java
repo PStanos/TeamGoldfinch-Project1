@@ -52,8 +52,8 @@ public class Bird implements Serializable {
     public Bird(Context context, int id, float relX, float relY) {
         this.id = id;
         bird = BitmapFactory.decodeResource(context.getResources(), id);
-        this.relX = 0.5f;
-        this.relY = 0.5f;
+        this.relX = relX;
+        this.relY = relY;
         x = -1;
         y = -1;
 
@@ -65,8 +65,8 @@ public class Bird implements Serializable {
     public Bird(Bird copy) {
         this.id = copy.id;
         this.bird = copy.bird;
-        this.relX = copy.relX;
-        this.relY = copy.relY;
+        this.relX = 0.5f;
+        this.relY = 0.5f;
         x = -1;
         y = -1;
 
