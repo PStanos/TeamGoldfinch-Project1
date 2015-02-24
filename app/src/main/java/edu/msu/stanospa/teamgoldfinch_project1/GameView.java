@@ -71,7 +71,7 @@ public class GameView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        game.draw(canvas);
+       game.draw(canvas);
     }
 
     public void saveInstanceState(Bundle bundle, Context context) { game.saveInstanceState(bundle, context); }
