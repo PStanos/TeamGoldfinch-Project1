@@ -25,7 +25,7 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/player_wins"
             android:id="@+id/winningPlayerText"
-            android:textSize="48sp"
+            android:textSize="24sp"
             android:gravity="center_horizontal" />
 
         <TextView
