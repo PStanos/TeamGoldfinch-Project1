@@ -46,9 +46,7 @@ public class SelectionView extends View {
     ** check to see if player selected a bird yet
      */
     public boolean isSelected(){
-        if (selection.getTouchedBird() != null) return true;
-
-        return false;
+        return selection.getTouchedBird() != null;
     }
 
     @Override

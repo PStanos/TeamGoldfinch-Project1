@@ -48,16 +48,6 @@ public class Game implements Serializable {
 
 
     /**
-     * The width screen margin for the game
-     */
-    private transient int marginX;
-
-    /**
-     * The height screen buffer for the game
-     */
-    private transient int marginY;
-
-    /**
      * The 1:1 scaling width of the game
      */
     private transient float scalingWidth;
@@ -285,8 +275,8 @@ public class Game implements Serializable {
         scaleFactor = minSide/scalingWidth;
 
         // Margins for centering the puzzle
-        marginX = (int)((width - minSide) / (scaleFactor*2));
-        marginY = (int)((height - minSide) / (scaleFactor*2));
+        int marginX = (int) ((width - minSide) / (scaleFactor * 2));
+        int marginY = (int) ((height - minSide) / (scaleFactor * 2));
 
 
         gameSize = (int)scalingWidth;
