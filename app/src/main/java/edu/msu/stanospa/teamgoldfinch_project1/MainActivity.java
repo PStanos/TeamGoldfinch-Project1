@@ -1,5 +1,6 @@
 package edu.msu.stanospa.teamgoldfinch_project1;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -7,7 +8,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-
 
 public class MainActivity extends ActionBarActivity {
 
@@ -55,5 +55,15 @@ public class MainActivity extends ActionBarActivity {
         Intent intent = new Intent(this, SelectionActivity.class);
         intent.putExtras(bundle);
         startActivity(intent);
+    }
+
+    public void onViewInstructions(View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+
+        builder.setTitle(R.string.instructions_title);
+        builder.setMessage(R.string.instructions_text);
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }

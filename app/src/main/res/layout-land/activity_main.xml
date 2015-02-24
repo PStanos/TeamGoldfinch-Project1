@@ -68,17 +68,36 @@
             android:layout_marginBottom="25dp"
             android:inputType="textCapWords" />
 
-        <Button
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="@string/start_game"
-            android:id="@+id/startGame"
-            android:layout_gravity="center_horizontal"
-            android:onClick="onStartGame"
-            android:paddingTop="25dp"
-            android:paddingBottom="25dp"
-            android:layout_marginTop="5dp"
-            android:textSize="24sp" />
+            android:gravity="center_horizontal">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/start_game"
+                android:id="@+id/startGame"
+                android:layout_gravity="center_horizontal"
+                android:onClick="onStartGame"
+                android:paddingTop="25dp"
+                android:paddingBottom="25dp"
+                android:layout_marginTop="5dp"
+                android:textSize="24sp"
+                android:layout_marginRight="10dp" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/view_instructions"
+                android:id="@+id/viewInstructions"
+                android:paddingTop="25dp"
+                android:paddingBottom="25dp"
+                android:textSize="24sp"
+                android:onClick="onViewInstructions" />
+        </LinearLayout>
+
     </LinearLayout>
 
 </LinearLayout>
