@@ -1,11 +1,14 @@
 package edu.msu.stanospa.teamgoldfinch_project1;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class SelectionActivity extends ActionBarActivity {
@@ -15,6 +18,10 @@ public class SelectionActivity extends ActionBarActivity {
     private SelectionView selectionView;
 
     private TextView selectionText;
+
+    private Toast noBirdToast;
+
+    private Toast birdSelectedToast;
 
     @Override
     protected void onSaveInstanceState(Bundle bundle) {
@@ -39,6 +46,15 @@ public class SelectionActivity extends ActionBarActivity {
 
         this.selectionText = (TextView) findViewById(R.id.playerNameLabel);
         setPlayerSelectionText();
+
+        Context context = getApplicationContext();
+        CharSequence noBirdText = "Please select a bird!";
+        int duration = Toast.LENGTH_SHORT;
+
+        noBirdToast = Toast.makeText(context, noBirdText, duration);
+        TextView v = (TextView) noBirdToast.getView().findViewById(android.R.id.message);
+        v.setTextColor(Color.RED);
+
 
         if (bundle != null){
             Log.i("onCreate()", "restoring state...");
@@ -70,6 +86,7 @@ public class SelectionActivity extends ActionBarActivity {
                 setPlayerSelectionText();
 
         } else {
+            noBirdToast.show();
             Log.i("onConfirmSelection", "bird not selected");
         }
     }
