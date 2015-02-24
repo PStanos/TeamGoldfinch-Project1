@@ -24,7 +24,7 @@
             android:id="@+id/gameTitle"
             android:layout_weight="0.33"
             android:layout_gravity="center"
-            android:textSize="48sp"
+            android:textSize="30sp"
             android:gravity="center" />
 
         <ImageView
@@ -39,31 +39,31 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/player_1_name"
             android:id="@+id/player1Text"
-            android:textSize="24sp" />
+            android:textSize="18sp" />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/player1Name"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="5dp"
             android:inputType="textCapWords" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/player_2_name"
             android:id="@+id/player2Text"
-            android:textSize="24sp" />
+            android:textSize="18sp" />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/player2Name"
-            android:layout_marginBottom="25dp"
+            android:layout_marginBottom="5dp"
             android:inputType="textCapWords" />
     </LinearLayout>
 
@@ -71,7 +71,7 @@
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.35"
+        android:layout_weight="0.4"
         android:gravity="center">
 
         <Button
@@ -80,19 +80,19 @@
             android:text="@string/start_game"
             android:id="@+id/startGame"
             android:onClick="onStartGame"
-            android:textSize="24sp"
+            android:textSize="20sp"
             android:layout_marginRight="10dp"
-            android:paddingTop="25dp"
-            android:paddingBottom="25dp" />
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/view_instructions"
             android:id="@+id/viewInstructions"
-            android:paddingTop="25dp"
-            android:paddingBottom="25dp"
-            android:textSize="24sp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:textSize="14sp"
             android:layout_gravity="center"
             android:onClick="onViewInstructions" />
     </LinearLayout>
