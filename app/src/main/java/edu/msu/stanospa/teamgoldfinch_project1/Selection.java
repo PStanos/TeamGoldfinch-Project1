@@ -55,9 +55,14 @@ public class Selection {
      */
     private Paint outlinePaint;
 
+    private Paint selectionPaint;
+
     public Bird getTouchedBird() {
         return touchedBird;
     }
+
+    private float touchedX;
+    private float touchedY;
 
     /**
      * Currently touched bird
@@ -68,6 +73,8 @@ public class Selection {
      * Collection of the birds that have been placed
      */
     private ArrayList<Bird> birds = new ArrayList<>();
+
+    private boolean birdTouched = false;
 
 
     /**
@@ -81,6 +88,13 @@ public class Selection {
         outlinePaint.setStrokeWidth(3.0f);
         outlinePaint.setColor(Color.GREEN);
 
+        // Create the paint to outline a bird when selected
+
+        selectionPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        selectionPaint.setStyle(Paint.Style.STROKE);
+        selectionPaint.setStrokeWidth(5.0f);
+        selectionPaint.setColor(Color.RED);
+
         // Birds will be scaled so that the game is "1.5 ostriches" wide
         Bitmap scaleBird = BitmapFactory.decodeResource(context.getResources(), R.drawable.ostrich);
         scalingWidth = scaleBird.getWidth()*1.5f;
@@ -88,10 +102,10 @@ public class Selection {
 
         // load the bird images
         birds.add(new Bird(context, R.drawable.ostrich, 0.0650f, 0.150f));
-        birds.add(new Bird(context, R.drawable.swallow, 0.736f, 0.158f));
+        birds.add(new Bird(context, R.drawable.swallow, 0.866f, 0.158f));
         birds.add(new Bird(context, R.drawable.robin, 0.841f, 0.451f));
         birds.add(new Bird(context, R.drawable.hummingbird, 0.158f, 0.119f));
-        birds.add(new Bird(context, R.drawable.seagull, 0.650f, 0.701f));
+        birds.add(new Bird(context, R.drawable.seagull, 0.800f, 0.901f));
 
     }
 
@@ -121,12 +135,15 @@ public class Selection {
         canvas.drawRect(marginX - BORDER_WIDTH, marginY - BORDER_WIDTH,
                 marginX + gameSize + BORDER_WIDTH, marginY + gameSize + BORDER_WIDTH, outlinePaint);
 
-
-
         for (Bird bird : birds) {
             bird.draw(canvas, marginX, marginY, gameSize);
         }
 
+        if(birdTouched) {
+            Log.i("draw()", "Touched a bird");
+            canvas.drawCircle(touchedX+marginX, touchedY+marginY, 5, selectionPaint);
+
+        }
         canvas.restore();
 
 
@@ -145,8 +162,9 @@ public class Selection {
         switch (event.getActionMasked()) {
 
             case MotionEvent.ACTION_DOWN:
-
-                return onTouched(relX, relY);
+                onTouched(relX, relY);
+                view.invalidate();
+                return true;
 
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
@@ -160,7 +178,7 @@ public class Selection {
     }
 
     private boolean onTouched(float x, float y) {
-        Log.i("onTouched", "checking...");
+        Log.i("onTouched", "checking..." + x + " " + y);
 
         // Check each piece to see if it has been hit
         // We do this in reverse order so we find the pieces in front
@@ -169,10 +187,13 @@ public class Selection {
                 // We hit a piece!
                 Log.i("onTouched", "PIECE HIT!!" + birds.get(b));
                 touchedBird = birds.get(b);
+                this.touchedX = x;
+                this.touchedY = y;
+                birdTouched = true;
                 return true;
             }
         }
-
+        birdTouched = false;
         return false;
     }
 
@@ -183,6 +204,9 @@ public class Selection {
     public void saveInstanceState(Bundle bundle) {
         if (touchedBird != null) {
             bundle.putInt("touchedBirdIndex", birds.indexOf(touchedBird));
+            bundle.putBoolean("outlined", birdTouched);
+            bundle.putFloat("outlinedX", touchedX);
+            bundle.putFloat("outlinedY", touchedY);
         }
     }
 
@@ -193,5 +217,10 @@ public class Selection {
     public void loadInstanceState(Bundle bundle) {
         int touchedBirdIndex = bundle.getInt("touchedBirdIndex");
         touchedBird = birds.get(touchedBirdIndex);
+        if (bundle.getBoolean("outlined")) {
+            birdTouched = true;
+            touchedX = bundle.getFloat("outlinedX");
+            touchedY = bundle.getFloat("outlinedY");
+        } else birdTouched = false;
     }
 }
