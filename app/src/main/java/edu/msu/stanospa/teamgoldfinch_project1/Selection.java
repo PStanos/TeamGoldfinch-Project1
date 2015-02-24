@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -61,9 +62,6 @@ public class Selection {
         return touchedBird;
     }
 
-    private float touchedX;
-    private float touchedY;
-
     /**
      * Currently touched bird
      */
@@ -73,8 +71,6 @@ public class Selection {
      * Collection of the birds that have been placed
      */
     private ArrayList<Bird> birds = new ArrayList<>();
-
-    private boolean birdTouched = false;
 
 
     /**
@@ -139,14 +135,12 @@ public class Selection {
             bird.draw(canvas, marginX, marginY, gameSize);
         }
 
-        if(birdTouched) {
-            Log.i("draw()", "Touched a bird");
-            canvas.drawCircle(touchedX+marginX, touchedY+marginY, 5, selectionPaint);
-
+        if(touchedBird != null) {
+            Rect birdRect = touchedBird.getRect();
+            canvas.drawRect(birdRect.left + marginX, birdRect.top + marginY, birdRect.right + marginX, birdRect.bottom + marginY, selectionPaint);
         }
+
         canvas.restore();
-
-
     }
 
     /**
@@ -187,13 +181,10 @@ public class Selection {
                 // We hit a piece!
                 Log.i("onTouched", "PIECE HIT!!" + birds.get(b));
                 touchedBird = birds.get(b);
-                this.touchedX = x;
-                this.touchedY = y;
-                birdTouched = true;
+
                 return true;
             }
         }
-        birdTouched = false;
         return false;
     }
 
@@ -204,10 +195,11 @@ public class Selection {
     public void saveInstanceState(Bundle bundle) {
         if (touchedBird != null) {
             bundle.putInt("touchedBirdIndex", birds.indexOf(touchedBird));
-            bundle.putBoolean("outlined", birdTouched);
-            bundle.putFloat("outlinedX", touchedX);
-            bundle.putFloat("outlinedY", touchedY);
         }
+        else {
+            bundle.putInt("touchedBirdIndex", -1);
+        }
+
     }
 
     /**
@@ -216,11 +208,9 @@ public class Selection {
      */
     public void loadInstanceState(Bundle bundle) {
         int touchedBirdIndex = bundle.getInt("touchedBirdIndex");
-        touchedBird = birds.get(touchedBirdIndex);
-        if (bundle.getBoolean("outlined")) {
-            birdTouched = true;
-            touchedX = bundle.getFloat("outlinedX");
-            touchedY = bundle.getFloat("outlinedY");
-        } else birdTouched = false;
+
+        if(touchedBirdIndex != -1) {
+            touchedBird = birds.get(touchedBirdIndex);
+        }
     }
 }

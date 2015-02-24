@@ -16,10 +16,18 @@ import java.io.Serializable;
 public class Bird implements Serializable {
     private static final long serialVersionUID = 3L;
 
+    public Bitmap getBird() {
+        return bird;
+    }
+
     /**
      * The image for the actual bird.
      */
     private transient Bitmap bird;
+
+    public Rect getRect() {
+        return rect;
+    }
 
     /**
      * Rectangle that is where our bird is.
